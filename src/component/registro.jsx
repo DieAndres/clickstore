@@ -117,7 +117,7 @@ const Registro = (props) =>{
                 
               </div>
               <div className="form-group">
-                <input type="password" value={datos.contraseniaregistro}  onChange={handleInputChange}  name="contraseniaregistro"  id="contraseniaregistro"className="form-control" aria-describedby="emailHelp" placeholder="Contraseña"></input>
+                <input type="password" value={datos.contraseniaregistro}  onChange={handleInputChange}  name="contraseniaregistro"  id="contraseniaregistro" className="form-control" aria-describedby="emailHelp" placeholder="Contraseña"></input>
                 
               </div>
               <div className="form-group">

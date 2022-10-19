@@ -3,15 +3,40 @@
 import { useState } from 'react'
 import image from "../assets/login.jpg";
 import logo from "../assets/CSFinal-3.png";
-import {Link} from 'react-router-dom';
+import {Link, Navigate,useNavigate} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
 import Registro from './registro';
-import { createusuario } from '../services/prueba';
-import axios from "axios";
+import { loginUser } from '../services/service';
 const Login = () =>{
+   const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
-  createusuario();
+  const [datoslogin, setDatoslogin] = useState({
+    maillogin : '',
+    contrasenialogin : '',
+  });
+
+  const handleInputChange =(event) =>{
+    setDatoslogin({
+      ...datoslogin,
+      [event.target.name] : event.target.value
+    })
+  }
+
+  const handlelogin = async (event) => {
+    event.preventDefault();
+    try{
+      const resp = await loginUser(datoslogin);
+     // setMensaje(resp)
+      debugger
+      if(resp[0] == 'Exito'){
+        sessionStorage.setItem("user", resp[1]);
+        navigate('/home')
+      }
+    }catch(error){
+      console.log(error)
+    }
+    
+  }
     return (
       <>
         <Registro show={modalShow} onHide={() => setModalShow(false)} />
@@ -35,18 +60,16 @@ const Login = () =>{
 
                           <h5 className="fw-normal mb-3 pb-3">Iniciar sesión</h5>
 
-                          <div className="form-outline mb-4">
-                            <input type="email" id="form2Example17" className="form-control form-control-lg" />
-                            <label className="form-label" htmlFor="form2Example17">Email</label>
+                          <div className="form-group">
+                            <input type="email" onChange={handleInputChange} name="maillogin" id="maillogin" className="form-control"  placeholder="Correo" />
                           </div>
-
-                          <div className="form-outline mb-4">
-                            <input type="password" id="form2Example27" className="form-control form-control-lg" />
-                            <label className="form-label" htmlFor="form2Example27">Contraseña</label>
+                          
+                          <div className="form-group">
+                            <input type="password"  onChange={handleInputChange}  name="contrasenialogin" id="contrasenialogin" className="form-control" placeholder="Contraseña" />
                           </div>
 
                           <div className="pt-1 mb-4">
-                            <Link to='/home' className="btn btn-lg btn-block" style={{ backgroundColor: "#212326", color: "#FFFFFF" }} type="button">Iniciar sesión</Link>
+                          <button className="btn btn-info btn-block my-4" onClick={handlelogin}  type="submit" style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px" }}>Login</button>
                           </div>
 
                           <a className="small text-muted" href="#!">¿Se te olvidó tu contraseña?</a>

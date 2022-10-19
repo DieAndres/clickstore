@@ -1,11 +1,30 @@
 import {Link} from 'react-router-dom';
 import logo from "../assets/CSFinal-3.png";
+import { useState,useEffect  } from 'react';
 const Header = () =>{
+    const [tipoUser, setTipoUser] = useState(null);
+    useEffect(() => {
+        setTipoUser('VENDEDOR');
+      });
+   
+    const MenuVendedor = ()=>{
+        return (
+            <li className="nav-item"> <Link className='nav-link' to='/createproduct'>Crear Producto</Link></li>
+        )
+    }
+    const MenuAdministrador= ()=>{
+        return (
+            <>
+                <li className="nav-item"> <Link className='nav-link' to='/listuser'>Busqueda Usuarios</Link></li>
+                <li className="nav-item"> <Link className='nav-link' to='/createadmin'>Crear Administrador</Link></li>
+            </>
+        )
+    }
     return (
       <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container px-4 px-lg-5">
-                <img src={logo} alt="login form" className="img-fluid" style={{ borderRadius: "1rem 0 0 1rem",width:"100px"}} ></img>
+            <Link to='/home'><img src={logo} alt="login form" className="img-fluid" style={{ borderRadius: "1rem 0 0 1rem",width:"100px"}} ></img></Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -13,6 +32,9 @@ const Header = () =>{
                         <li className="nav-item"><a className="nav-link" href="#!">About</a></li>
                         <li className="nav-item"> <Link className='nav-link' to='/listuser'>Busqueda Usuarios</Link></li>
                         <li className="nav-item"> <Link className='nav-link' to='/createadmin'>Crear Administrador</Link></li>
+                        <li className="nav-item"> <Link className='nav-link' to='/createproduct'>Crear Producto</Link></li>
+                        {tipoUser == 'VENDEDOR' ? <MenuVendedor></MenuVendedor> : ''}
+                        {tipoUser == 'ADMIN' ? <MenuAdministrador></MenuAdministrador> : ''}
                         <li className="nav-item">
                                 <div className="dropdown show">
                                     <a className="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -73,14 +95,6 @@ const Header = () =>{
                 
             </div>
         </nav>
-        <header className="bg-dark py-5 header-menu">
-            <div className="container px-4 px-lg-5 my-5">
-                <div className="text-center text-white">
-                    <h1 className="display-4 fw-bolder">Shop in style</h1>
-                    <p className="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
-                </div>
-            </div>
-        </header>
       </>
       );
 }
