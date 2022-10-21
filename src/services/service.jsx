@@ -58,7 +58,7 @@ export const createProduct = async (datos,imagenes) =>{
   const datosend = {
         "nombre": datos.nombreproducto,
         "descripcion": datos.descripcionproducto,
-        "precio" :  datos.precioproducto,
+        "precio" :  12.00,
         "stock" :  datos.stockproducto,
         "categoria" :  datos.categoriaproducto,
         "activo" :  true,
@@ -74,4 +74,80 @@ export const createProduct = async (datos,imagenes) =>{
       console.log(error)
   }
   return mensaje;
+}
+
+export const addProductCart = async (product) =>{
+  const id = product.id;
+  const cantidad = product.countproduct
+  const idClient = sessionStorage.getItem('user')
+  try{
+    const url = "https://tecnoinf-proyecto-grupo1.herokuapp.com/api/carrito/ingresar"
+    const res = await axios.post(url,
+    {
+      // data to sent to the server - post body
+      // it can be an empty object
+    },
+    {
+      // specify query parameters
+      params: {
+        idProducto: id,
+        idCliente : idClient,
+        cantidad : cantidad
+      },
+    });
+    mensaje[0] = res.data.mensaje;
+    mensaje[1] = res.data.objeto;
+  }catch(error){
+      console.log(error)
+  }
+  return mensaje;
+}
+
+export const getProductCart = async () =>{
+  debugger
+  const mensaje = [];
+  const idClient = sessionStorage.getItem('user')
+  try{
+    const res = await axios.get("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/carrito/consultar?idCliente="+idClient,
+    {
+      // data to sent to the server - post body
+      // it can be an empty object
+    },
+    {
+      // specify query parameters
+      params: {
+        idCliente : idClient,
+      }
+    });
+    mensaje[0] = res.data.mensaje;
+    mensaje[1] = res.data.objeto;
+  }catch(error){
+      console.log(error)
+  }
+  return mensaje  ;
+}
+
+
+export const deleteProductCart = async (idProducto) =>{
+  debugger
+  const mensaje = [];
+  const idClient = sessionStorage.getItem('user')
+  try{
+    const res = await axios.put("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/carrito/eliminar?idProducto="+idProducto+"&idCliente="+idClient,
+    {
+      // data to sent to the server - post body
+      // it can be an empty object
+    },
+    {
+      // specify query parameters
+      params: {
+        idCliente : idClient,
+        idProducto: idProducto
+      }
+    });
+    mensaje[0] = res.data.mensaje;
+    mensaje[1] = res.data.objeto;
+  }catch(error){
+
+  }
 }

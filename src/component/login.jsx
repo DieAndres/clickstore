@@ -10,6 +10,8 @@ import { loginUser } from '../services/service';
 const Login = () =>{
    const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
+  const [estadomail, setEstadomail] = useState(true);
+  const [estadocontra, setEstadocontra] = useState(true);
   const [datoslogin, setDatoslogin] = useState({
     maillogin : '',
     contrasenialogin : '',
@@ -24,17 +26,23 @@ const Login = () =>{
 
   const handlelogin = async (event) => {
     event.preventDefault();
-    try{
-      const resp = await loginUser(datoslogin);
-     // setMensaje(resp)
-      debugger
-      if(resp[0] == 'Exito'){
-        sessionStorage.setItem("user", resp[1]);
-        navigate('/home')
+    if(datoslogin.maillogin != '' && datoslogin.contrasenialogin){
+      try{
+        const resp = await loginUser(datoslogin);
+       // setMensaje(resp)
+        debugger
+        if(resp[0] == 'Exito'){
+          sessionStorage.setItem("user", resp[1]);
+          navigate('/home')
+        }
+      }catch(error){
+        console.log(error)
       }
-    }catch(error){
-      console.log(error)
+    }else{
+      datoslogin.maillogin == '' ? setEstadomail(false) : setEstadomail(true);
+      datoslogin.contrasenialogin == '' ? setEstadocontra(false) : setEstadocontra(true);
     }
+    
     
   }
     return (
@@ -62,10 +70,12 @@ const Login = () =>{
 
                           <div className="form-group">
                             <input type="email" onChange={handleInputChange} name="maillogin" id="maillogin" className="form-control"  placeholder="Correo" />
+                            {estadomail == false ? <div role="alert" style={{color:'#842029'}}>Se deba ingresar un correo!</div>: ''}
                           </div>
                           
                           <div className="form-group">
                             <input type="password"  onChange={handleInputChange}  name="contrasenialogin" id="contrasenialogin" className="form-control" placeholder="Contraseña" />
+                            {estadocontra == false ? <div role="alert" style={{color:'#842029'}}>Se deba ingresar una contraseña!</div>: ''}
                           </div>
 
                           <div className="pt-1 mb-4">

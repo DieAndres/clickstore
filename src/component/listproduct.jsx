@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import JsonData from "../MOCK_DATA.json";
 import ReactPaginate from "react-paginate";
 import Product from "./product";
+import Prueba from "./pruebacosas";
 const ListProduct = () =>{
   const [users, setUsers] = useState(JsonData.slice(0, 50));
   const [pageNumber, setPageNumber] = useState(0);

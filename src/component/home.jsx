@@ -16,7 +16,6 @@ const Home = () =>{
           </div>
         </header>
         <ListProduct></ListProduct>
-        <Prueba></Prueba>
       </>
       );
 }
