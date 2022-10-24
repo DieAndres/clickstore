@@ -1,6 +1,6 @@
 import { useState} from 'react';
 import { addProductCart } from '../services/service';
-const Product = ({nombre,precio}) =>{
+const Product = ({nombre,precio,id}) =>{
     const [count, setCount] = useState(1);
     const handleaddcart = async (event) =>{
         const product = {
@@ -15,9 +15,6 @@ const Product = ({nombre,precio}) =>{
           return mensaje;
        
     }
-    /*const setcount = (op) =>{
-
-    }*/
     return (
         <>
             <div className="col mb-5">
@@ -46,9 +43,9 @@ const Product = ({nombre,precio}) =>{
                     </div>
 
                     <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div className="d-flex align-items-center">
+                        <div className="d-flex align-items-center justify-content-center">
                             <button onClick={() => setCount(count - 1)} className="ripple ripple-surface btn btn-link px-2" role="button"><i className="fas fa-minus"></i></button>
-                            <div className="form-outline"><input type="number" className="form-control active form-control-sm" min="0" value={count}></input>
+                            <div className="form-outline"><p type="number" className="form-control active form-control-sm" min="0" style={{marginBottom:0}}>{count}</p>
                                 <div className="form-notch"><div className="form-notch-leading">
                                 </div>
                                     <div className="form-notch-middle" style={{ width: "0px" }}>
@@ -60,7 +57,7 @@ const Product = ({nombre,precio}) =>{
                             <button  onClick={() => setCount(count + 1)}  className="ripple ripple-surface btn btn-link px-2" role="button"><i className="fas fa-plus"></i>
                             </button>
                         </div>
-                        <div className="text-center"><button name="78" className="btn btn-outline-dark mt-auto" onClick={handleaddcart}>Add to cart</button></div>
+                        <div className="text-center"><button name={id} className="btn btn-outline-dark mt-auto" onClick={handleaddcart}>Add to cart</button></div>
                         
                     </div>
                     

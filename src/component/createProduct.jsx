@@ -2,7 +2,7 @@ import { Form } from 'react-bootstrap';
 import { useState } from 'react'
 import Header from './header';
 import { createProduct } from '../services/service';
-const CreateProduct = (props) =>{
+const CreateProduct = ({setCantpro,cantpro}) =>{
     const [formValues, setFormValues] = useState([{ ruta: ""}])
     const [datos, setDatos] = useState({
         nombreproducto:'',
@@ -37,8 +37,8 @@ const CreateProduct = (props) =>{
     
     let handleSubmit = async (event) => {
         try{
-            const resp = await createProduct(datos,formValues);
-            setMensaje(resp)
+           // const resp = await createProduct(datos,formValues);
+            //setMensaje(resp)
             setDatos({
               ...datos,
               nombreproducto:'',
@@ -46,13 +46,14 @@ const CreateProduct = (props) =>{
               stockproducto : '',
               categoriaproducto : ''
             })
+            setCantpro(cantpro+1)
           }catch(error){
             console.log(error)
           }
     }
     return (
         <>
-            <Header></Header>
+            {cantpro == undefined && <Header></Header>}
             <section className="vh-100" style={{}}>
                 <div className="container py-5 h-100">
                     <div className="row d-flex justify-content-center align-items-center h-100">

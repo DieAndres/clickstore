@@ -63,7 +63,7 @@ export const createProduct = async (datos,imagenes) =>{
         "categoria" :  datos.categoriaproducto,
         "activo" :  true,
         "imagenesUrl" :  arrimg,
-        "idVendedor" : 111,
+        "idVendedor" : 2,
   }
   const JSONdatosend = JSON.stringify(datosend);
   try{
@@ -149,5 +149,17 @@ export const deleteProductCart = async (idProducto) =>{
     mensaje[1] = res.data.objeto;
   }catch(error){
 
+  }
+}
+
+
+export const AllListProduct = async () =>{
+  const mensaje = [];
+  debugger
+  try{
+    const res =  await axios.get("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/producto/listarTodos",{},{headers: {'Content-Type': 'application/json'}})
+   return res.data
+  }catch(error){
+    console.log(error)
   }
 }
