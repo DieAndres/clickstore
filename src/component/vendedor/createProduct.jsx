@@ -1,7 +1,7 @@
 import { Form } from 'react-bootstrap';
 import { useState } from 'react'
-import Header from './header';
-import { createProduct } from '../services/service';
+import Header from '../header';
+import { createProduct } from '../../services/service';
 const CreateProduct = ({setCantpro,cantpro}) =>{
     const [formValues, setFormValues] = useState([{ ruta: ""}])
     const [datos, setDatos] = useState({
@@ -37,7 +37,8 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
     
     let handleSubmit = async (event) => {
         try{
-           // const resp = await createProduct(datos,formValues);
+            
+           const resp = await createProduct(datos,formValues);
             //setMensaje(resp)
             setDatos({
               ...datos,
@@ -46,6 +47,7 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
               stockproducto : '',
               categoriaproducto : ''
             })
+            debugger
             setCantpro(cantpro+1)
           }catch(error){
             console.log(error)
@@ -54,8 +56,8 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
     return (
         <>
             {cantpro == undefined && <Header></Header>}
-            <section className="vh-100" style={{}}>
-                <div className="container py-5 h-100">
+            <section className="mb-5" style={{}}>
+                <div className="container h-100">
                     <div className="row d-flex justify-content-center align-items-center h-100">
                         <div className="col col-xl-10">
                             <div className="card d-flex justify-content-center align-items-center" style={{ borderRadius: "1rem" }}>
@@ -73,7 +75,7 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
                                         <select className="form-select" onChange={handleInputChange} name="categoriaproducto" id="categoriaproducto" aria-label="Default select example">
                                             <option defaultValue>Categoria</option>
                                             <option value="INDUMENTARIA">INDUMENTARIA</option>
-                                            <option value="ELECTRODOMÉSTICOS">ELECTRODOMÉSTICOS</option>
+                                            <option value="ELECTRODOMESTICOS">ELECTRODOMÉSTICOS</option>
                                             <option value="VIVERES">VIVERES</option>
                                             <option value="INSTRUMENTOS">INSTRUMENTOS</option>
                                             <option value="CALZADO">CALZADO</option>

@@ -153,12 +153,102 @@ export const deleteProductCart = async (idProducto) =>{
 }
 
 
+export const AllListProductActive = async () =>{
+  const mensaje = [];
+  debugger
+  try{
+    const res =  await axios.get("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/producto/listarActivos",{},{headers: {'Content-Type': 'application/json'}})
+   return res.data
+  }catch(error){
+    console.log(error)
+  }
+}
+
+
 export const AllListProduct = async () =>{
   const mensaje = [];
   debugger
   try{
     const res =  await axios.get("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/producto/listarTodos",{},{headers: {'Content-Type': 'application/json'}})
    return res.data
+  }catch(error){
+    console.log(error)
+  }
+}
+export const VendedorRegistro = async (datos,formValues) =>{
+  debugger
+  var mensaje = [];
+  const idClient = sessionStorage.getItem('user')
+  const datosend = {
+        "idUsr": idClient,
+        "nombreComercial": datos.nombreComercial,
+        "habilitaEnvio" :  datos.envios,
+        "direcciones" :  formValues
+  }
+  const JSONdatosend = JSON.stringify(datosend);
+  try{
+    const res = await axios.post("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/vendedor/registrarVendedor",JSONdatosend, {headers: {'Content-Type': 'application/json'}});
+    mensaje[0] = res.data.mensaje;
+    mensaje[1] = res.data.objeto;
+  }catch(error){
+      console.log(error)
+  }
+  return mensaje;
+}
+
+
+export const agregarDireccion = async (datos) =>{
+  debugger
+  var mensaje = [];
+  var arraydir = [];
+  arraydir.push(datos)
+  const idClient = sessionStorage.getItem('user')
+  const datosend = {
+        "idUsuario": idClient,
+        "direcciones": arraydir,
+  }
+  const JSONdatosend = JSON.stringify(datosend);
+  try{
+    const res = await axios.post("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/cliente/altadireccion", JSONdatosend, {headers: {'Content-Type': 'application/json'}})
+    mensaje[0] = res.data.mensaje;
+    mensaje[1] = res.data.objeto;
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const deleteProductVendedor = async (idProducto) =>{
+  var mensaje = [];
+  debugger
+  try{
+    const res = await axios.put("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/producto/baja?idP="+idProducto,
+    {
+      // data to sent to the server - post body
+      // it can be an empty object
+    },
+    {
+      // specify query parameters
+      params: {
+        idP: idProducto
+      }
+    });
+    mensaje[0]=res.data.mensaje;
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const totalizarcompra = async () =>{
+  debugger
+  const mensaje = '';
+  const idClient = sessionStorage.getItem('user')
+  try{
+    const res =  await axios.get("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/carrito/totalizar?idCliente="+idClient,{},{
+      params: {
+        idCliente : idClient,
+      }
+    },{headers: {'Content-Type': 'application/json'}})
+   return res.data.mensaje
   }catch(error){
     console.log(error)
   }

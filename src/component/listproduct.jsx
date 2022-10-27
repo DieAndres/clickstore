@@ -3,7 +3,7 @@ import JsonData from "../MOCK_DATA.json";
 import ReactPaginate from "react-paginate";
 import Product from "./product";
 import Prueba from "./pruebacosas";
-import { AllListProduct } from "../services/service";
+import { AllListProductActive } from "../services/service";
 const ListProduct = () =>{
   const [allproduct, setAllProduct] = useState([
 ]);
@@ -22,7 +22,7 @@ const ListProduct = () =>{
     useEffect(() => {
       try {
         async function getListProduct() {
-          const res = await AllListProduct()
+          const res = await AllListProductActive()
           debugger
           const arrprod = res.objeto;
           setAllProduct(arrprod)

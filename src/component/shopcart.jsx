@@ -15,10 +15,21 @@ import {
   import Header from "./header";
   import { useState,useEffect } from 'react';
   import { getProductCart, deleteProductCart } from "../services/service";
+  import {
+      PayPalScriptProvider,
+      PayPalButtons,
+      usePayPalScriptReducer
+} from "@paypal/react-paypal-js";
+import ButtonWrapper from "./paypalCart";
+import { totalizarcompra } from "../services/service";
+// This values are the props in the UI
+
   export default function ShopCart() {
+    const currency = "USD";
     const [productos, setproductos] = useState([{ cantidad: 0,id:0,idProducto:0,total:0,nombreProducto:''}]);
     const [preciototal, setPreciototal] =useState(0);
     const [cantproductos, setCantProducto] =useState(0);
+    const [renderPago, setRenderPago] =useState(false);
     var totalprecio=0;
     useEffect(() => {
       try {
@@ -40,7 +51,7 @@ import {
 
     }, []);
 
-
+    
     
     let removeFormFields = async (i) => {
       try{
@@ -65,12 +76,17 @@ import {
         
       }
   }
-  let sumar = () =>{
-    setproductos({
-      ...productos,
-      producto:"11"
-    })
+  let comenzarPago = async () =>{
+    try{
+      const res = await totalizarcompra();
+      if(res=='Exito'){
+        setRenderPago(true)
+      }
+    }catch(error){
+      console.log(error)
+    }
   }
+
   return (
     <>
       <Header></Header>
@@ -92,47 +108,47 @@ import {
                           </MDBTypography>
                         </div>
                         {productos.map((element, index) => (
-                        <MDBRow className="mb-4 d-flex justify-content-between align-items-center" key={index}>
-                          <hr className="my-4" />
-                          <MDBCol md="2" lg="2" xl="2">
-                            <MDBCardImage
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                              fluid className="rounded-3" alt="Cotton T-shirt" />
-                          </MDBCol>
-                          <MDBCol md="3" lg="3" xl="3">
-                            <MDBTypography tag="h6" className="text-muted">
-                              Nombre
-                            </MDBTypography>
-                            <MDBTypography tag="h6" className="text-black mb-0">
-                              {element.nombreProducto}
-                            </MDBTypography>
-                          </MDBCol>
-                          <MDBCol md="3" lg="2" xl="2" className="">
-                            <MDBTypography tag="h6" className="text-muted">
-                              Cantidad
-                            </MDBTypography>
-                            <MDBTypography tag="h6" className="text-black mb-0">
-                              {element.cantidad}
-                            </MDBTypography>
-                          </MDBCol>
-                          <MDBCol md="3" lg="2" xl="2" className="">
-                            <MDBTypography tag="h6" className="text-muted">
-                              Precio
-                            </MDBTypography>
-                            <MDBTypography tag="h6" className="text-black mb-0">
-                             $ {element.total}
-                            </MDBTypography>
-                          </MDBCol>
-                          <MDBCol md="1" lg="1" xl="1" className="text-end">
-                            <button className="text-muted" onClick={() => removeFormFields(index)}>
-                              <MDBIcon fas icon="times" />
-                            </button>
-                          </MDBCol>
-                          <hr className="my-4" />
-                        </MDBRow>                        
+                          <MDBRow className="mb-4 d-flex justify-content-between align-items-center" key={index}>
+                            <hr className="my-4" />
+                            <MDBCol md="2" lg="2" xl="2">
+                              <MDBCardImage
+                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
+                                fluid className="rounded-3" alt="Cotton T-shirt" />
+                            </MDBCol>
+                            <MDBCol md="3" lg="3" xl="3">
+                              <MDBTypography tag="h6" className="text-muted">
+                                Nombre
+                              </MDBTypography>
+                              <MDBTypography tag="h6" className="text-black mb-0">
+                                {element.nombreProducto}
+                              </MDBTypography>
+                            </MDBCol>
+                            <MDBCol md="3" lg="2" xl="2" className="">
+                              <MDBTypography tag="h6" className="text-muted">
+                                Cantidad
+                              </MDBTypography>
+                              <MDBTypography tag="h6" className="text-black mb-0">
+                                {element.cantidad}
+                              </MDBTypography>
+                            </MDBCol>
+                            <MDBCol md="3" lg="2" xl="2" className="">
+                              <MDBTypography tag="h6" className="text-muted">
+                                Precio
+                              </MDBTypography>
+                              <MDBTypography tag="h6" className="text-black mb-0">
+                                $ {element.total}
+                              </MDBTypography>
+                            </MDBCol>
+                            <MDBCol md="1" lg="1" xl="1" className="text-end">
+                              <button className="text-muted" onClick={() => removeFormFields(index)}>
+                                <MDBIcon fas icon="times" />
+                              </button>
+                            </MDBCol>
+                            <hr className="my-4" />
+                          </MDBRow>
                         ))}
 
-                       
+
 
                         <div className="pt-5">
                           <MDBTypography tag="h6" className="mb-0">
@@ -188,10 +204,24 @@ import {
                           </MDBTypography>
                           <MDBTypography tag="h5">{preciototal}</MDBTypography>
                         </div>
-
-                        <MDBBtn color="dark" block size="lg" onClick={sumar}>
-                          Register
-                        </MDBBtn>
+                        {!renderPago && <button className="btn btn-dark" onClick={comenzarPago}>Comenzar compra</button>}
+                        {renderPago && <div style={{ maxWidth: "750px", minHeight: "200px" }}>
+                          <PayPalScriptProvider
+                            options={{
+                              "client-id": "Ab5QCDojr8-_SiXyMXmEv9GRITDE11topuPaRnlczXy4Ud39lkD0b5CQOoBwcbgyKCsd2ObQERJX08Gc",
+                              components: "buttons",
+                              currency: "USD"
+                            }}
+                          >
+                            <ButtonWrapper
+                              currency={currency}
+                              showSpinner={false}
+                              preciototal={preciototal}
+                            />
+                          </PayPalScriptProvider>
+                        </div>}
+                          
+                        
                       </div>
                     </MDBCol>
                   </MDBRow>

@@ -1,6 +1,6 @@
 import { Form } from 'react-bootstrap';
 import { useState } from 'react'
-import Header from './header';
+import Header from '../header';
 const CreateAdmin = (props) =>{
   const [datos, setDatos] = useState({
     nombreregistro:'',
