@@ -12,35 +12,34 @@ import {
     MDBTypography,
     } from "mdb-react-ui-kit";
     import React from "react";
-    import Header from "./header";
+    import Header from "../header";
     import { useState,useEffect } from 'react';
-    import { getProductCart, deleteProductCart } from "../services/service";
-    import {
-        PayPalScriptProvider,
-        PayPalButtons,
-        usePayPalScriptReducer
-  } from "@paypal/react-paypal-js";
-  import ButtonWrapper from "./paypalCart";
+    import { listproductpending } from "../../services/service";
+    import Productpending from "./productpending";
   // This values are the props in the UI
   
     export default function ProductBuy() {
-      const currency = "USD";
-      const [productos, setproductos] = useState([{ cantidad: 0,id:0,idProducto:0,total:0,nombreProducto:''}]);
+      const [productos, setproductos] = useState([{ cantidad: 0,id:0,idProducto:0,total:0,nombreProducto:'',fecha:'',metodosEntrega:[]}]);
       const [preciototal, setPreciototal] =useState(0);
       const [cantproductos, setCantProducto] =useState(0);
+      
       var totalprecio=0;
       useEffect(() => {
         try {
+          debugger
           async function getProduct() {
-            const res = await getProductCart();
+            const res = await listproductpending();
             const arrprod = res[1];
             setproductos(arrprod)
+            console.log(productos)
             arrprod.forEach(function (p) {
               console.log(p.total)
               totalprecio = totalprecio +  p.total
               setPreciototal(totalprecio)
             });
             setCantProducto(arrprod.length)
+            
+            //setCantenvios(arrprod.metodoentrega.length)
           }
           getProduct()
         } catch (error) {
@@ -48,161 +47,54 @@ import {
         }
   
       }, []);
-  
-      
-      
-      let removeFormFields = async (i) => {
-        try{
-          console.log(i);
-          const idProducto = productos[i].idProducto;
-          let newproductos = [...productos];
-          newproductos.splice(i, 1);
-          setproductos(newproductos)
-          debugger
-          if(newproductos.length <=0){
-            setPreciototal(totalprecio)
-          }else{
-            newproductos.forEach(function(p) {
-              totalprecio = totalprecio+p.total
-              console.log(totalprecio)
-              setPreciototal(totalprecio)
-           });
-          }
-          setCantProducto(newproductos.length)
-          const res = await deleteProductCart(idProducto)
-        }catch(error){
-          
-        }
-    }
+
     return (
       <>
         <Header></Header>
-        <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
-          <MDBContainer className="py-5 h-100">
-            <MDBRow className="justify-content-center align-items-center h-100">
-              <MDBCol size="12">
-                <MDBCard className="card-registration card-registration-2" style={{ borderRadius: "15px" }}>
-                  <MDBCardBody className="p-0">
-                    <MDBRow className="g-0">
-                      <MDBCol lg="8">
-                        <div className="p-5">
-                          <div className="d-flex justify-content-between align-items-center mb-5">
-                            <MDBTypography tag="h1" className="fw-bold mb-0 text-black">
-                              Shopping Cart
-                            </MDBTypography>
-                            <MDBTypography className="mb-0 text-muted">
-                              Cantidad Productos : {cantproductos}
-                            </MDBTypography>
-                          </div>
-                          {productos.map((element, index) => (
-                            <MDBRow className="mb-4 d-flex justify-content-between align-items-center" key={index}>
-                              <hr className="my-4" />
-                              <MDBCol md="2" lg="2" xl="2">
-                                <MDBCardImage
-                                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                                  fluid className="rounded-3" alt="Cotton T-shirt" />
-                              </MDBCol>
-                              <MDBCol md="3" lg="3" xl="3">
-                                <MDBTypography tag="h6" className="text-muted">
-                                  Nombre
-                                </MDBTypography>
-                                <MDBTypography tag="h6" className="text-black mb-0">
-                                  {element.nombreProducto}
-                                </MDBTypography>
-                              </MDBCol>
-                              <MDBCol md="3" lg="2" xl="2" className="">
-                                <MDBTypography tag="h6" className="text-muted">
-                                  Cantidad
-                                </MDBTypography>
-                                <MDBTypography tag="h6" className="text-black mb-0">
-                                  {element.cantidad}
-                                </MDBTypography>
-                              </MDBCol>
-                              <MDBCol md="3" lg="2" xl="2" className="">
-                                <MDBTypography tag="h6" className="text-muted">
-                                  Precio
-                                </MDBTypography>
-                                <MDBTypography tag="h6" className="text-black mb-0">
-                                  $ {element.total}
-                                </MDBTypography>
-                              </MDBCol>
-                              <MDBCol md="1" lg="1" xl="1" className="text-end">
-                                <button className="text-muted" onClick={() => removeFormFields(index)}>
-                                  <MDBIcon fas icon="times" />
-                                </button>
-                              </MDBCol>
-                              <hr className="my-4" />
-                            </MDBRow>
-                          ))}
-  
-  
-  
-                          <div className="pt-5">
-                            <MDBTypography tag="h6" className="mb-0">
-                              <MDBCardText tag="a" href="#!" className="text-body">
-                                <MDBIcon fas icon="long-arrow-alt-left me-2" /> Back
-                                to shop
-                              </MDBCardText>
-                            </MDBTypography>
-                          </div>
-                        </div>
-                      </MDBCol>
-                      <MDBCol lg="4" className="bg-grey">
-                        <div className="p-5">
-                          <MDBTypography tag="h3" className="fw-bold mb-5 mt-2 pt-1">
-                            Summary
-                          </MDBTypography>
-  
-                          <hr className="my-4" />
-  
-                          <div className="d-flex justify-content-between mb-4">
-                            <MDBTypography tag="h5" className="text-uppercase">
-                              items 3
-                            </MDBTypography>
-                            <MDBTypography tag="h5">€ 132.00</MDBTypography>
-                          </div>
-  
-                          <MDBTypography tag="h5" className="text-uppercase mb-3">
-                            Shipping
-                          </MDBTypography>
-  
-                          <div className="mb-4 pb-2">
-                            <select className="select p-2 rounded bg-grey" style={{ width: "100%" }}>
-                              <option value="1">Standard-Delivery- €5.00</option>
-                              <option value="2">Two</option>
-                              <option value="3">Three</option>
-                              <option value="4">Four</option>
-                            </select>
-                          </div>
-  
-                          <MDBTypography tag="h5" className="text-uppercase mb-3">
-                            Give code
-                          </MDBTypography>
-  
-                          <div className="mb-5">
-                            <MDBInput size="lg" label="Enter your code" />
-                          </div>
-  
-                          <hr className="my-4" />
-  
-                          <div className="d-flex justify-content-between mb-5">
-                            <MDBTypography tag="h5" className="text-uppercase">
-                              Total price
-                            </MDBTypography>
-                            <MDBTypography tag="h5">{preciototal}</MDBTypography>
-                          </div>
-  
-                          <MDBBtn color="dark" block size="lg" onClick={sumar}>
-                            Register
-                          </MDBBtn>
-                        </div>
-                      </MDBCol>
-                    </MDBRow>
-                  </MDBCardBody>
-                </MDBCard>
-              </MDBCol>
-            </MDBRow>
-          </MDBContainer>
+        <section className="h-100 gradient-custom">
+          <div className="container py-5 h-100">
+            <div className="row d-flex justify-content-center align-items-center h-100">
+              <div className="col-lg-10 col-xl-8">
+                <div className="card" style={{ borderRadius: "10px" }}>
+                  <div className="card-header px-4 py-5">
+                    <h5 className="text-muted mb-0">Thanks for your Order, <span style={{ color: "#a8729a" }} >Anna</span>!</h5>
+                  </div>
+                  <div className="card-body p-4">
+                    <div className="d-flex justify-content-between align-items-center mb-4">
+                      <p className="lead fw-normal mb-0" style={{ color: "#a8729a" }} >Receipt</p>
+                      <p className="small text-muted mb-0">Cantidad de productos: {cantproductos}</p>
+                    </div>
+                    {productos.map((element, index) => (
+                      <Productpending key={index} cantidad={element.cantidad} id={element.id} total={element.total} nombre={element.nombreProducto} fecha={element.fecha} metodoentrega={element.metodosEntrega}></Productpending>
+                    ))}
+                    <div className="d-flex justify-content-between pt-2">
+                      <p className="fw-bold mb-0">Order Details</p>
+                      <p className="text-muted mb-0"><span className="fw-bold me-4">Total</span> {preciototal}</p>
+                    </div>
+
+                    <div className="d-flex justify-content-between pt-2">
+                      <p className="text-muted mb-0">Invoice Number : 788152</p>
+                      <p className="text-muted mb-0"><span className="fw-bold me-4">Discount</span> $19.00</p>
+                    </div>
+
+                    <div className="d-flex justify-content-between">
+                      <p className="text-muted mb-0">Invoice Date : 22 Dec,2019</p>
+                      <p className="text-muted mb-0"><span className="fw-bold me-4">GST 18%</span> 123</p>
+                    </div>
+
+                    <div className="d-flex justify-content-between mb-5">
+                      <p className="text-muted mb-0">Recepits Voucher : 18KU-62IIK</p>
+                      <p className="text-muted mb-0"><span className="fw-bold me-4">Delivery Charges</span> Free</p>
+                    </div>
+                  </div>
+                  <div className="card-footer border-0 px-4 py-5 card-detailfooter">
+                    <h5 className="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
+                      paid: <span className="h2 mb-0 ms-2">$1040</span></h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </>
     );

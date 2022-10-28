@@ -5,7 +5,7 @@ import {
     PayPalButtons,
     usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
-
+import { confirmarCompra } from "../services/service";
 const style = {"layout":"vertical"};
 const ButtonWrapper = ({ currency, showSpinner,preciototal,renderPago }) => {
     const amount = preciototal;
@@ -50,9 +50,14 @@ const ButtonWrapper = ({ currency, showSpinner,preciototal,renderPago }) => {
                         });
                 }}
                 onApprove={function (data, actions) {
-                    return actions.order.capture().then((details) => {
+                    return actions.order.capture().then(async(details) => {
                         debugger
                         const name = details.payer.name.given_name;
+                        try{
+                        const res = await confirmarCompra("PAYPAL");
+                        }catch(error){
+                            console.log(error)
+                        }
                         alert(`Transaction completed by ${name}`);
                     });
                 }}

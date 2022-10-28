@@ -38,7 +38,6 @@ const Product = ({nombre,precio,id}) =>{
                             </div>
 
                             <span className="text-muted text-decoration-line-through">{precio}</span>
-                            $18.00
                         </div>
                     </div>
 

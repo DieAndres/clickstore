@@ -253,3 +253,61 @@ export const totalizarcompra = async () =>{
     console.log(error)
   }
 }
+
+function padTo2Digits(num) {
+  return num.toString().padStart(2, '0');
+}
+
+function formatDate(date) {
+  return (
+    [
+      date.getFullYear(),
+      padTo2Digits(date.getMonth() + 1),
+      padTo2Digits(date.getDate()),
+    ].join('-') +
+    ' ' +
+    [
+      padTo2Digits(date.getHours()),
+      padTo2Digits(date.getMinutes()),
+      padTo2Digits(date.getSeconds()),
+    ].join(':')
+  );
+}
+
+export const confirmarCompra = async (method) =>{
+  debugger
+  const idClient = sessionStorage.getItem('user')
+  const hoy = formatDate(new Date())
+  const datosend = {
+        "idCliente": idClient,
+        "fecha": hoy,
+        "metodo": method,
+        "referenciaExterna" : "99999"
+  }
+  const JSONdatosend = JSON.stringify(datosend);
+  try{
+    const res = await axios.post("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/compra/confirmarCompra", JSONdatosend, {headers: {'Content-Type': 'application/json'}})
+    /*mensaje[0] = res.data.mensaje;
+    mensaje[1] = res.data.objeto;*/
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const listproductpending = async ()  =>{
+  debugger
+  const mensaje = []
+  const idClient = sessionStorage.getItem('user')
+  try{
+    const res =  await axios.get("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/compra/pendientesDeElegirEnrega?idC="+idClient,{},{
+      params: {
+        idCliente : idClient,
+      }
+    },{headers: {'Content-Type': 'application/json'}})
+    mensaje[0] = res.data.mensaje;
+    mensaje[1] = res.data.objeto
+   return mensaje
+  }catch{
+    console.log(console.error())
+  }
+}

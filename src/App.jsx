@@ -11,6 +11,7 @@ import Prueba from './component/pruebacosas';
 import RegistroVendedor from './component/cliente/registrarvendedor';
 import EditPerfile from './component/cliente/editprofile';
 import ListProductVendedor from './component/vendedor/listproductvendedor';
+import ProductBuy from './component/cliente/productbuy';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 function App() {
   const [count, setCount] = useState(0)
@@ -27,6 +28,7 @@ function App() {
           <Route path='/registravendedor' element={<RegistroVendedor></RegistroVendedor>} />
           <Route path='/editperfile' element={<EditPerfile></EditPerfile>} />
           <Route path='/listProductVendedor' element={<ListProductVendedor></ListProductVendedor>} />
+          <Route path='/productpending' element={<ProductBuy></ProductBuy>} />
         </Routes>
       </BrowserRouter>
     
