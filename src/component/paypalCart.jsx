@@ -6,8 +6,10 @@ import {
     usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
 import { confirmarCompra } from "../services/service";
+import {useNavigate} from 'react-router-dom';
 const style = {"layout":"vertical"};
 const ButtonWrapper = ({ currency, showSpinner,preciototal,renderPago }) => {
+    const navigate = useNavigate();
     const amount = preciototal;
     // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
     // This is the main reason to wrap the PayPalButtons in a new component
@@ -44,7 +46,6 @@ const ButtonWrapper = ({ currency, showSpinner,preciototal,renderPago }) => {
                             ],
                         })
                         .then((orderId) => {
-                            // Your code here after create the order
                             console.log("orden",orderId)
                             return orderId;
                         });
@@ -55,6 +56,7 @@ const ButtonWrapper = ({ currency, showSpinner,preciototal,renderPago }) => {
                         const name = details.payer.name.given_name;
                         try{
                         const res = await confirmarCompra("PAYPAL");
+                        navigate('/productpending')
                         }catch(error){
                             console.log(error)
                         }

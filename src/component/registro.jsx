@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { Form } from 'react-bootstrap';
 import { useState } from 'react'
 import { registerUser } from '../services/service';
+import { Noti, NotiError } from './Notification';
 const Registro = (props) =>{
   const [datos, setDatos] = useState({
     nombreregistro:'',
@@ -64,23 +65,15 @@ const Registro = (props) =>{
         ciudadregistro : '',
         departamentoegistro : ''
       })
+      if(resp == 'Exito'){
+        Noti('Usuario registrado')
+      }else{
+        NotiError("No se puedo registrar el usuario")
+      }
     }catch(error){
       console.log(error)
     }
     
-  }
-
-  const Mensaje = ({mensaje}) =>{
-    if(mensaje != ''){
-      return (
-        <Modal.Footer>
-        <div className="alert alert-primary alerta-registro" role="alert">
-          {mensaje}
-        </div>
-      </Modal.Footer>
-       
-        )
-    }
   }
     return (
       <>
@@ -148,7 +141,6 @@ const Registro = (props) =>{
             </div>
             
           </Modal.Body>
-         {mensaje != '' ? <Mensaje mensaje={mensaje}></Mensaje> : ''}
         </Modal>
         
       </>

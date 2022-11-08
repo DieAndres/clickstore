@@ -2,8 +2,12 @@ import { Form } from 'react-bootstrap';
 import { useState } from 'react'
 import Header from '../header';
 import { createProduct } from '../../services/service';
+import { Noti,NotiError } from '../Notification';
+import { ToastContainer} from "react-toastify";
+import { storage } from "../firebase";
 const CreateProduct = ({setCantpro,cantpro}) =>{
     const [formValues, setFormValues] = useState([{ ruta: ""}])
+    //const [image, setImage] = useState(null);
     const [datos, setDatos] = useState({
         nombreproducto:'',
         precioproducto : '',
@@ -18,11 +22,42 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
         })
         console.log(datos)
       }
+      const handleUpload = () => {
+        formValues.forEach(element => {
+            debugger
+            var image = element.ruta
+            const uploadTask = storage.ref(`images/${image.name}`).put(image);
+            uploadTask.on(
+            "state_changed",
+            snapshot => {
+                const progress = Math.round(
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                //setProgress(progress);
+            },
+            error => {
+                console.log(error);
+            },
+            () => {
+                storage
+                .ref("images")
+                .child('prueba')
+                .getDownloadURL()
+                .then(url => {
+                });
+            }
+            );
+        });
+        
+      };
     let handleChange = (i, e) => {
+        debugger
         let newFormValues = [...formValues];
-        newFormValues[i][e.target.name] = e.target.value;
+        newFormValues[i][e.target.name] = e.target.files[0];
         setFormValues(newFormValues);
         console.log(formValues)
+        //handleUpload();
+        
       }
     
     let addFormFields = () => {
@@ -34,7 +69,6 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
         newFormValues.splice(i, 1);
         setFormValues(newFormValues)
     }
-    
     let handleSubmit = async (event) => {
         try{
             
@@ -47,12 +81,26 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
               stockproducto : '',
               categoriaproducto : ''
             })
-            debugger
-            setCantpro(cantpro+1)
+            setFormValues([{ ruta: ""}]);
+            document.getElementById('ruta').value = ''
+            if(cantpro != undefined){
+                setCantpro(cantpro+1)
+            }
+           if(resp[0]=='Exito'){
+                Noti("Producto creado correctamente")
+            }else{
+                NotiError("Error al crear un producto")
+            }
           }catch(error){
             console.log(error)
           }
     }
+
+    const handleChangeImg = e => {
+        if (e.target.files[0]) {
+          setImage(e.target.files[0]);
+        }
+      };
     return (
         <>
             {cantpro == undefined && <Header></Header>}
@@ -63,28 +111,28 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
                             <div className="card d-flex justify-content-center align-items-center" style={{ borderRadius: "1rem" }}>
                                 <div className="text-center border border-light p-5" action="#!" style={{ width: "70%" }}>
                                     <div className="form-group">
-                                        <input type="text" onChange={handleInputChange} name="nombreproducto" id="nombreproducto" className="form-control" placeholder="Nombre"></input>
+                                        <input type="text" value={datos.nombreproducto} onChange={handleInputChange} name="nombreproducto" id="nombreproducto" className="form-control" placeholder="Nombre"></input>
                                     </div>
                                     <div className="form-group">
-                                        <input type="text" onChange={handleInputChange} name="precioproducto" id="precioproducto" className="form-control" placeholder="Precio"></input>
+                                        <input type="text" value={datos.precioproducto} onChange={handleInputChange} name="precioproducto" id="precioproducto" className="form-control" placeholder="Precio"></input>
                                     </div>
                                     <div className="form-group">
-                                        <input type="text" onChange={handleInputChange} name="stockproducto" id="stockproducto" className="form-control" placeholder="Cantidad"></input>
+                                        <input type="text" value={datos.stockproducto} onChange={handleInputChange} name="stockproducto" id="stockproducto" className="form-control" placeholder="Cantidad"></input>
                                     </div>
                                     <div className="form-group">
-                                        <select className="form-select" onChange={handleInputChange} name="categoriaproducto" id="categoriaproducto" aria-label="Default select example">
+                                        <select className="form-select" value={datos.categoriaproducto} onChange={handleInputChange} name="categoriaproducto" id="categoriaproducto" aria-label="Default select example">
                                             <option defaultValue>Categoria</option>
                                             <option value="INDUMENTARIA">INDUMENTARIA</option>
                                             <option value="ELECTRODOMESTICOS">ELECTRODOMÉSTICOS</option>
                                             <option value="VIVERES">VIVERES</option>
                                             <option value="INSTRUMENTOS">INSTRUMENTOS</option>
-                                            <option value="CALZADO">CALZADO</option>
+                                            <option value="CALZADOS">CALZADO</option>
                                             <option value="LIBROS">LIBROS</option>
                                         </select>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="exampleFormControlTextarea1">Descripción</label>
-                                        <textarea className="form-control" onChange={handleInputChange} name="descripcionproducto" id="descripcionproducto"  rows="3"></textarea>
+                                        <textarea className="form-control" value={datos.descripcionproducto} onChange={handleInputChange} name="descripcionproducto" id="descripcionproducto" rows="3"></textarea>
                                     </div>
                                     <div className="form-group" id='containerfiles'>
                                         {formValues.map((element, index) => (
@@ -110,6 +158,18 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
                     </div>
                 </div>
             </section>
+            <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            ></ToastContainer>
         </>
     );
 }

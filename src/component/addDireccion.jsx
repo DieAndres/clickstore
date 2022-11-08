@@ -1,6 +1,5 @@
 import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react'
-import { registerUser } from '../services/service';
 import { agregarDireccion } from '../services/service';
 const AddDireccion = (props) =>{
   const [datos, setDatos] = useState({
@@ -44,18 +43,6 @@ const AddDireccion = (props) =>{
     
   }
 
-  const Mensaje = ({mensaje}) =>{
-    if(mensaje != ''){
-      return (
-        <Modal.Footer>
-        <div className="alert alert-primary alerta-registro" role="alert">
-          {mensaje}
-        </div>
-      </Modal.Footer>
-       
-        )
-    }
-  }
     return (
       <>
         <Modal
@@ -104,7 +91,6 @@ const AddDireccion = (props) =>{
             </div>
             
           </Modal.Body>
-         {mensaje != '' ? <Mensaje mensaje={mensaje}></Mensaje> : ''}
         </Modal>
         
       </>

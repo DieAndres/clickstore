@@ -7,6 +7,9 @@ import {Link, Navigate,useNavigate} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Registro from './registro';
 import { loginUser } from '../services/service';
+import { Noti,NotiError } from './Notification';
+import { ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Login = () =>{
    const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
@@ -23,26 +26,29 @@ const Login = () =>{
       [event.target.name] : event.target.value
     })
   }
-
+  
   const handlelogin = async (event) => {
     event.preventDefault();
-    if(datoslogin.maillogin != '' && datoslogin.contrasenialogin){
-      try{
+    if(datoslogin.maillogin != '' && datoslogin.contrasenialogin !=''){
+      try{        
         const resp = await loginUser(datoslogin);
        // setMensaje(resp)
         debugger
         if(resp[0] == 'Exito'){
           sessionStorage.setItem("user", resp[1]);
+          sessionStorage.setItem("rol", resp[3]);
+          sessionStorage.setItem("token", resp[2]);
           navigate('/home')
+        }else{
+          NotiError(resp[0])
         }
       }catch(error){
         console.log(error)
       }
     }else{
-      datoslogin.maillogin == '' ? setEstadomail(false) : setEstadomail(true);
-      datoslogin.contrasenialogin == '' ? setEstadocontra(false) : setEstadocontra(true);
+      datoslogin.maillogin == '' && NotiError('Es necesario ingesar correo')
+      if(datoslogin.contrasenialogin == '' && datoslogin.maillogin !='')   NotiError('Es necesario ingesar contraseña') 
     }
-    
     
   }
     return (
@@ -79,7 +85,8 @@ const Login = () =>{
                           </div>
 
                           <div className="pt-1 mb-4">
-                          <button className="btn btn-info btn-block my-4" onClick={handlelogin}  type="submit" style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px" }}>Login</button>
+                            
+                              <button className="btn btn-info btn-block my-4" onClick={handlelogin}  type="submit" style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px" }}>Login</button>                                                      
                           </div>
 
                           <a className="small text-muted" href="#!">¿Se te olvidó tu contraseña?</a>
@@ -95,6 +102,18 @@ const Login = () =>{
             </div>
           </div>
         </section>
+        <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        ></ToastContainer>
       </>
       );
 }

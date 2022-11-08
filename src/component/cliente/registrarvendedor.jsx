@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import CreateProduct from '../vendedor/createProduct';
 import Header from '../header';
 import { VendedorRegistro } from '../../services/service';
+import { Noti,NotiError } from '../Notification';
 const RegistroVendedor = (props) => {
   const navigate = useNavigate();
   const [cantpro, setCantpro] = useState(0)
@@ -52,6 +53,7 @@ const RegistroVendedor = (props) => {
 
   let handleSubmit = async (event) => {
     try {
+      debugger
       const resp = await VendedorRegistro(datos,formValues);
       //setMensaje(resp)
       setDatos({
@@ -59,7 +61,12 @@ const RegistroVendedor = (props) => {
         nombreComercial: '',
         envios: false
       })
-      setRenderproducto(true);
+      if(resp[0] == 'Vendedor registrado'){
+        setRenderproducto(true);
+      }else{
+        NotiError('Error al registrarse como vendedor');
+      }
+      
     } catch (error) {
       console.log(error)
     }

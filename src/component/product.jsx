@@ -1,7 +1,10 @@
 import { useState} from 'react';
 import { addProductCart } from '../services/service';
-const Product = ({nombre,precio,id}) =>{
+import { storage } from "./firebase";
+const Product = ({nombre,precio,id,imagenesUrl}) =>{
     const [count, setCount] = useState(1);
+    const [image, setImage] = useState('');
+    const [url, setUrl] = useState('');
     const handleaddcart = async (event) =>{
         const product = {
             id:event.target.name,
@@ -12,8 +15,32 @@ const Product = ({nombre,precio,id}) =>{
           }catch(error){
               console.log(error)
           }
-          return mensaje;
-       
+    }
+    const ViewImgs = () =>{
+        if(imagenesUrl.length>0){
+            imagenesUrl.forEach(element => {
+                if(element !=''){
+                    setImage(element)
+                }
+            });
+            if(image != ''){
+                storage
+            .ref("images")
+            .child(image)
+            .getDownloadURL()
+            .then(url => {
+               setUrl(url)
+            });
+            
+            return(
+                <img className="card-img-top" src={url} alt="..." />
+            )
+            }else{
+                return <img className="card-img-top" src='https://img.icons8.com/bubbles/2x/000000/product.png' alt="..." />
+            }
+            /**/
+        }
+        
     }
     return (
         <>
@@ -22,7 +49,7 @@ const Product = ({nombre,precio,id}) =>{
 
                     <div className="badge bg-dark text-white position-absolute" style={{ top: "0.5rem", right: "0.5rem" }}>Envios</div>
 
-                    <img className="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                    <ViewImgs></ViewImgs>
 
                     <div className="card-body p-4">
                         <div className="text-center">
@@ -37,7 +64,7 @@ const Product = ({nombre,precio,id}) =>{
                                 <div className="bi-star-fill"></div>
                             </div>
 
-                            <span className="text-muted text-decoration-line-through">{precio}</span>
+                            <span className="text-muted">${precio}</span>
                         </div>
                     </div>
 

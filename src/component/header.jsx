@@ -1,22 +1,49 @@
-import {Link} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 import logo from "../assets/CSFinal-3.png";
-import { useState,useEffect  } from 'react';
+import React, { useState,useEffect  } from 'react';
 const Header = () =>{
-    const [tipoUser, setTipoUser] = useState(null);
-        useEffect(() => {
-        setTipoUser('VENDEDOR');
-      });
-   
+    const [tipoUser, setTipoUser] = useState('');
+    const navigate = useNavigate();
+      useEffect(() => {
+        const rol = sessionStorage.getItem('rol')
+        setTipoUser(rol)
+      }, []);
+    const logout = () =>{
+        sessionStorage.setItem("user",'');
+        sessionStorage.setItem("rol", '');
+        navigate('/')
+    }
     const MenuVendedor = ()=>{
         return (
-            <li className="nav-item"> <Link className='nav-link' to='/createproduct'>Crear Producto</Link></li>
+            <React.Fragment>
+            <div className="nav-item">
+                        <div className="dropdown show">
+                            <a className="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Vendedor
+                            </a>
+
+                            <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li className="nav-item"> <Link className='nav-link' to='/createproduct'>Crear Producto</Link></li>
+                                <li className="nav-item"> <Link className='nav-link' to='/listProductVendedor'>Mis productos</Link></li>
+                            </div>
+                        </div>
+            </div>
+            </React.Fragment>
         )
     }
     const MenuAdministrador= ()=>{
+        debugger
         return (
             <>
                 <li className="nav-item"> <Link className='nav-link' to='/listuser'>Busqueda Usuarios</Link></li>
                 <li className="nav-item"> <Link className='nav-link' to='/createadmin'>Crear Administrador</Link></li>
+            </>
+        )
+    }
+    const MenuCliente = () =>{
+        return (
+            <>
+                <li className="nav-item"> <Link className='nav-link' to='/registravendedor'>Registrarse como vendedor</Link></li>
             </>
         )
     }
@@ -65,13 +92,13 @@ const Header = () =>{
                                     </a>
                                     <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                         <li>
-                                            <a className="dropdown-item" href="#">My profile</a>
+                                            <Link className='nav-link' to='/editperfile'>Editar Perfil</Link>
                                         </li>
                                         <li>
                                             <a className="dropdown-item" href="#">Settings</a>
                                         </li>
                                         <li>
-                                            <a className="dropdown-item" href="#">Logout</a>
+                                            <a onClick={logout} className="dropdown-item" href="#">Logout</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -90,26 +117,11 @@ const Header = () =>{
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                            <li className="nav-item"><a className="nav-link active" aria-current="page" href="#!">Home</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#!">About</a></li>
-                            <li className="nav-item"> <Link className='nav-link' to='/listuser'>Busqueda Usuarios</Link></li>
-                            <li className="nav-item"> <Link className='nav-link' to='/createadmin'>Crear Administrador</Link></li>
-                            <li className="nav-item"> <Link className='nav-link' to='/createproduct'>Crear Producto</Link></li>
-                            {tipoUser == 'VENDEDOR' ? <MenuVendedor></MenuVendedor> : ''}
-                            {tipoUser == 'ADMIN' ? <MenuAdministrador></MenuAdministrador> : ''}
-                            <li className="nav-item">
-                                <div className="dropdown show">
-                                    <a className="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Dropdown link
-                                    </a>
-
-                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a className="dropdown-item" href="#">Action</a>
-                                        <a className="dropdown-item" href="#">Another action</a>
-                                        <a className="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </div>
-                            </li>
+                            
+                            {tipoUser == 'ROL_VENDEDOR' ? <MenuVendedor></MenuVendedor> : ''}
+                            {tipoUser == 'ROL_ADMIN' ? <MenuAdministrador></MenuAdministrador> : ''}
+                            {tipoUser == 'ROL_CLIENTE' ? <MenuCliente></MenuCliente> : ''}
+                            
                         </ul>
                         <BtnLogeado></BtnLogeado>
 
