@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import {Link, Navigate,useNavigate} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AddDireccion from '../addDireccion';
+import AddDireccion from './addDireccion';
 const EditPerfile = () =>{
    const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);

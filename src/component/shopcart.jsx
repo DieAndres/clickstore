@@ -13,6 +13,7 @@ import {
   } from "mdb-react-ui-kit";
   import React from "react";
   import Header from "./header";
+  import {Link} from 'react-router-dom';
   import { useState,useEffect } from 'react';
   import { getProductCart, deleteProductCart } from "../services/service";
   import {
@@ -22,6 +23,7 @@ import {
 } from "@paypal/react-paypal-js";
 import ButtonWrapper from "./paypalCart";
 import { totalizarcompra } from "../services/service";
+import { getImageProduct } from "../services/service";
 // This values are the props in the UI
 
   export default function ShopCart() {
@@ -45,6 +47,7 @@ import { totalizarcompra } from "../services/service";
           setCantProducto(arrprod.length)
         }
         getProduct()
+        //const img = getImageProduct()
       } catch (error) {
         console.log(error)
       }
@@ -90,7 +93,7 @@ import { totalizarcompra } from "../services/service";
   return (
     <>
       <Header></Header>
-      <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
+      <section className="h-custom" style={{ backgroundColor: "#eee",height:'100vh'}}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
             <MDBCol size="12">
@@ -101,7 +104,7 @@ import { totalizarcompra } from "../services/service";
                       <div className="p-5">
                         <div className="d-flex justify-content-between align-items-center mb-5">
                           <MDBTypography tag="h1" className="fw-bold mb-0 text-black">
-                            Shopping Cart
+                            Carrito de compras
                           </MDBTypography>
                           <MDBTypography className="mb-0 text-muted">
                             Cantidad Productos : {cantproductos}
@@ -152,10 +155,9 @@ import { totalizarcompra } from "../services/service";
 
                         <div className="pt-5">
                           <MDBTypography tag="h6" className="mb-0">
-                            <MDBCardText tag="a" href="#!" className="text-body">
-                              <MDBIcon fas icon="long-arrow-alt-left me-2" /> Back
-                              to shop
-                            </MDBCardText>
+                            <Link className="text-body" to='/home'>
+                              <MDBIcon fas icon="long-arrow-alt-left me-2" /> Vovler a la tienda
+                            </Link>
                           </MDBTypography>
                         </div>
                       </div>
@@ -163,46 +165,17 @@ import { totalizarcompra } from "../services/service";
                     <MDBCol lg="4" className="bg-grey">
                       <div className="p-5">
                         <MDBTypography tag="h3" className="fw-bold mb-5 mt-2 pt-1">
-                          Summary
+                          Resumen
                         </MDBTypography>
 
                         <hr className="my-4" />
 
-                        <div className="d-flex justify-content-between mb-4">
-                          <MDBTypography tag="h5" className="text-uppercase">
-                            items 3
-                          </MDBTypography>
-                          <MDBTypography tag="h5">€ 132.00</MDBTypography>
-                        </div>
-
-                        <MDBTypography tag="h5" className="text-uppercase mb-3">
-                          Shipping
-                        </MDBTypography>
-
-                        <div className="mb-4 pb-2">
-                          <select className="select p-2 rounded bg-grey" style={{ width: "100%" }}>
-                            <option value="1">Standard-Delivery- €5.00</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                            <option value="4">Four</option>
-                          </select>
-                        </div>
-
-                        <MDBTypography tag="h5" className="text-uppercase mb-3">
-                          Give code
-                        </MDBTypography>
-
-                        <div className="mb-5">
-                          <MDBInput size="lg" label="Enter your code" />
-                        </div>
-
-                        <hr className="my-4" />
 
                         <div className="d-flex justify-content-between mb-5">
                           <MDBTypography tag="h5" className="text-uppercase">
-                            Total price
+                            PRECIO TOTAL
                           </MDBTypography>
-                          <MDBTypography tag="h5">{preciototal}</MDBTypography>
+                          <MDBTypography tag="h5">${preciototal}</MDBTypography>
                         </div>
                         {!renderPago && <button className="btn btn-dark" onClick={comenzarPago}>Comenzar compra</button>}
                         {renderPago && <div style={{ maxWidth: "750px", minHeight: "200px" }}>
@@ -231,6 +204,7 @@ import { totalizarcompra } from "../services/service";
           </MDBRow>
         </MDBContainer>
       </section>
+      
     </>
   );
   }

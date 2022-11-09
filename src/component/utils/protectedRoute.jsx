@@ -1,15 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom";
-
 export const ProtectedRouteClient = ({
-  isAllowed,
   redirectTo = "/home",
   children,
 }) => {
-  if (!isAllowed) {
-    return <Navigate to={redirectTo} replace />;
+  debugger
+  const rol = sessionStorage.getItem('rol')
+  if (rol=='ROL_CLIENTE' || rol=='ROL_VENDEDOR') {
+    return children ? children : <Outlet />;
   }
+  return <Navigate to={redirectTo} replace />;
 
-  return children ? children : <Outlet />;
 };
 
 export const ProtectedRouteVendeor = ({
@@ -17,8 +17,21 @@ export const ProtectedRouteVendeor = ({
   redirectTo = "/home",
   children,
 }) => {
-  debugger
-  if (!isAllowed) {
+  const rol = sessionStorage.getItem('rol')
+  if (rol!='ROL_VENDEDOR') {
+    return <Navigate to={redirectTo} replace />;
+  }
+
+  return children ? children : <Outlet />;
+};
+
+export const ProtectedRouteAdmin = ({
+  isAllowed,
+  redirectTo = "/home",
+  children,
+}) => {
+  const rol = sessionStorage.getItem('rol')
+  if (rol!='ROL_ADMIN') {
     return <Navigate to={redirectTo} replace />;
   }
 

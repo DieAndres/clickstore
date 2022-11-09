@@ -8,8 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Registro from './registro';
 import { loginUser } from '../services/service';
 import { Noti,NotiError } from './Notification';
-import { ToastContainer} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 const Login = () =>{
    const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
@@ -102,18 +100,6 @@ const Login = () =>{
             </div>
           </div>
         </section>
-        <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        ></ToastContainer>
       </>
       );
 }

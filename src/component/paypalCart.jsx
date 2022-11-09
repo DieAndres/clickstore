@@ -7,6 +7,7 @@ import {
 } from "@paypal/react-paypal-js";
 import { confirmarCompra } from "../services/service";
 import {useNavigate} from 'react-router-dom';
+import { Noti } from "./Notification";
 const style = {"layout":"vertical"};
 const ButtonWrapper = ({ currency, showSpinner,preciototal,renderPago }) => {
     const navigate = useNavigate();
@@ -57,10 +58,11 @@ const ButtonWrapper = ({ currency, showSpinner,preciototal,renderPago }) => {
                         try{
                         const res = await confirmarCompra("PAYPAL");
                         navigate('/productpending')
+                        Noti(`Transacción completada por ${name}`);
                         }catch(error){
                             console.log(error)
                         }
-                        alert(`Transaction completed by ${name}`);
+                       
                     });
                 }}
             />

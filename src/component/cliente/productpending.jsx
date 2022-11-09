@@ -1,6 +1,5 @@
 import { useState,useEffect } from 'react';
 import { Noti, NotiError } from '../Notification';
-import { ToastContainer} from "react-toastify";
 const Productpending = ({ cantidad, id, total, nombre, fecha,metodoentrega,setSendpro,sendpro,dire}) =>{
     const [cantenvios, setCantenvios] =useState([]);
     const tipoEnviohandle = (id,tipo) =>{
@@ -18,7 +17,6 @@ const Productpending = ({ cantidad, id, total, nombre, fecha,metodoentrega,setSe
         
     }
     const Metodoentrega = ()=>{
-        console.log(cantenvios)
         if(metodoentrega !=undefined){
             if(metodoentrega.length){
                 return(
@@ -46,10 +44,13 @@ const Productpending = ({ cantidad, id, total, nombre, fecha,metodoentrega,setSe
         }
        
     }
+    const formatearFecha = (fecha) =>{
+        const fechafor = fecha.split('T')
+        return fechafor[0];
+    }
     
     return (
         <>
-
             <div className="card shadow-0 border mb-4">
                 <div className="card-body">
                     <div className="row">
@@ -63,7 +64,7 @@ const Productpending = ({ cantidad, id, total, nombre, fecha,metodoentrega,setSe
                         </div>
                         <div className="col-md-3 text-center d-flex justify-content-center align-items-center flex-column">
                             <h5 className="text-muted mb-0">Fecha de solicitud</h5>
-                            <p className="text-muted mb-0 small">{fecha}</p>
+                            <p className="text-muted mb-0 small">{formatearFecha(fecha)}</p>
                         </div>
                         <div className="col-md-2 text-center d-flex justify-content-center align-items-center flex-column">
                             <h5 className="text-muted mb-0">Cantidad</h5>
@@ -75,41 +76,12 @@ const Productpending = ({ cantidad, id, total, nombre, fecha,metodoentrega,setSe
                         </div>
                     </div>
                     <hr className="mb-4" style={{ backgroundColor: "#e0e0e0", opacity: "1" }}></hr>
-                    <div className="row d-flex align-items-center">
-                        <div className="col-md-2">
-                            <p className="text-muted mb-0 small">Track Order</p>
-                        </div>
-                        <div className="col-md-10">
-                            <div className="progress" style={{ height: "6px", borderRadius: "16px" }}>
-                                <div className="progress-bar" role="progressbar"
-                                    style={{ Width: "65", borderRadius: "16px", backgroundColor: "#a8729a" }} aria-valuenow="65"
-                                    aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <div className="d-flex justify-content-around mb-1">
-                            
-                                <p className="text-muted mt-1 mb-0 small ms-xl-5">Out for delivary</p>
-                                <p className="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
-                            </div>
-                        </div>
-                    </div>
+                    
                     {
                        <Metodoentrega></Metodoentrega> 
                     }
                 </div>
             </div>
-            <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            ></ToastContainer>
-
         </>
       );
 }

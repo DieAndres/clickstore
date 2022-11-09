@@ -3,7 +3,6 @@ import { useState } from 'react'
 import Header from '../header';
 import { createProduct } from '../../services/service';
 import { Noti,NotiError } from '../Notification';
-import { ToastContainer} from "react-toastify";
 import { storage } from "../firebase";
 const CreateProduct = ({setCantpro,cantpro}) =>{
     const [formValues, setFormValues] = useState([{ ruta: ""}])
@@ -151,25 +150,13 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
                                     <div className="form-group">
                                         <p>Cargar otra imagen</p><button type="button" className="btn btn-primary" onClick={() => addFormFields()}><i className="fa-regular fa-plus"></i></button>
                                     </div>
-                                    <button className="btn btn-info btn-block my-4" onClick={handleSubmit} type="submit" style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px" }}>Registrase</button>
+                                    <button className="btn btn-info btn-block my-4" onClick={handleSubmit} type="submit" style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px" }}>Crear Producto</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            ></ToastContainer>
         </>
     );
 }

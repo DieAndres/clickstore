@@ -2,28 +2,26 @@
     import React from "react";
     import Header from "../header";
     import { useState,useEffect } from 'react';
-    import { listproductpendingSeller } from "../../services/service";
+    import { listshoppinghistory } from "../../services/service";
     import ReactPaginate from "react-paginate";
-    import ProductSetDate from "./productSetDate";
+    import Shoppinghistory from "./shoppinghistory";
   // This values are the props in the UI
   
-    export default function ProductPending() {
-      const [allproduct, setAllProduct] = useState([
+    export default function ListShoppinghistory() {
+      const [allproduct, setAllproduct] = useState([
       ]);
     const [pageNumber, setPageNumber] = useState(0);
-    const [numerDelete, setNumerDelete] = useState(0);
     
     const productPerPage = 12;
     const pagesVisited = pageNumber * productPerPage;
     useEffect(() => {
       try {
-          console.log(numerDelete)
-        async function getListProduct() {
-          const res = await listproductpendingSeller()
+        async function getListShoppinghistory() {
+          const res = await listshoppinghistory()
           const arrprod = res[1];
-          setAllProduct(arrprod)
+          setAllproduct(arrprod)
         }
-        getListProduct()
+        getListShoppinghistory()
       } catch (error) {
         console.log(error)
       }
@@ -34,21 +32,12 @@
     const changePage = ({ selected }) => {
       setPageNumber(selected);
     };
-    const deleteproduct = async(id) =>{
-      try{
-          setNumerDelete(numerDelete+1);
-          const res = await deleteProductVendedor(id);
-          window.location.reload(true);
-      }catch(error){
-  
-      }
-  }
  
     const displayUsers = allproduct
     .slice(pagesVisited, pagesVisited + productPerPage)
     .map((p) => {
       return (
-        <ProductSetDate key={p.id} id={p.id} nombreProducto={p.nombreProducto} total={p.total} tipoEntrea={p.entrega.tipoEntrea} fecha={p.fecha} setAllProduct={setAllProduct} allproduct={allproduct}></ProductSetDate>
+           <Shoppinghistory id={p.id} fecha={p.fecha} nombreProducto={p.nombreProducto} cantidad={p.cantidad} total={p.total} metodosEntrega={p.metodosEntrega} allproduct={allproduct} setAllproduct={setAllproduct}></Shoppinghistory>
       ); 
     });
   
@@ -64,11 +53,10 @@
                                     <thead>
                                         <tr>
                                           
-                                            <th><span>Nombre</span></th>
-                                            <th ><span>Precio</span></th>
-                                            <th><span>Metodo Entrega</span></th>
-                                            <th><span>Fecha</span></th>
-                                            <th>Asignar fecha</th>
+                                            <th><span>Id Vendedor</span></th>
+                                            <th ><span>Nombre Comercio</span></th>
+                                            <th><span>Aprobar/Rechazar</span></th>
+                                            <th><span>Confirmar</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>

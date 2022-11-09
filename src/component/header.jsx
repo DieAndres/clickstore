@@ -16,7 +16,9 @@ const Header = () =>{
     const MenuVendedor = ()=>{
         return (
             <React.Fragment>
+                <MenuCliente></MenuCliente>
             <div className="nav-item">
+                
                         <div className="dropdown show">
                             <a className="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Vendedor
@@ -25,6 +27,7 @@ const Header = () =>{
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li className="nav-item"> <Link className='nav-link' to='/createproduct'>Crear Producto</Link></li>
                                 <li className="nav-item"> <Link className='nav-link' to='/listProductVendedor'>Mis productos</Link></li>
+                                <li className="nav-item"> <Link className='nav-link' to='/productpendingSeller'>Confirmar Ventas</Link></li>
                             </div>
                         </div>
             </div>
@@ -44,6 +47,7 @@ const Header = () =>{
         return (
             <>
                 <li className="nav-item"> <Link className='nav-link' to='/registravendedor'>Registrarse como vendedor</Link></li>
+                <li className="nav-item"> <Link className='nav-link' to='/pendingshoppinglist'>Confirmar Entregas</Link></li>
             </>
         )
     }

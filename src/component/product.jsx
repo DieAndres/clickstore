@@ -1,6 +1,7 @@
 import { useState} from 'react';
 import { addProductCart } from '../services/service';
 import { storage } from "./firebase";
+import { Noti, NotiError } from './Notification';
 const Product = ({nombre,precio,id,imagenesUrl}) =>{
     const [count, setCount] = useState(1);
     const [image, setImage] = useState('');
@@ -12,6 +13,11 @@ const Product = ({nombre,precio,id,imagenesUrl}) =>{
         }
         try{
             const res = await addProductCart(product)
+            if(res[0]=="Exito"){
+                Noti('Producto agregado al carrito');
+            }else{
+                NotiError('No se pudo agregar producto al carrito')
+            }
           }catch(error){
               console.log(error)
           }

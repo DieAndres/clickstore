@@ -1,21 +1,46 @@
 import { useState } from 'react'
 import { deleteProductVendedor } from '../../services/service';
-const ProductVendedor = ({nombre,descripcion, categoria, stock, precio ,id,numerDelete,setNumerDelete}) =>{
+import { storage } from "../firebase";
+import { Noti,NotiError } from '../Notification';
+const ProductVendedor = ({nombre,descripcion, categoria, stock, precio ,id,imagen,activo}) =>{
+    const [url, setUrl] = useState('');
     const deleteproduct = async() =>{
         try{
-            setNumerDelete(numerDelete+1);
+            debugger
             const res = await deleteProductVendedor(id);
-            console.log(res)
+            if(res =='Producto dado de baja'){
+                Noti('Se dio de baja el producto')
+                window.location.reload(true);
+            }else{
+                NotiError('No se pudo dar de baja el producto')
+            }
+            
         }catch(error){
-
+            console.log(error)
         }
+    }
+    const RenderImg = ({imagen})=>{
+      storage
+      .ref("images")
+      .child(imagen[0])
+      .getDownloadURL()
+      .then(url => {
+        setUrl(url)
+        
+      });
+      return(
+        <img src={url}></img>
+      )
     }
     return (
       <>
              <tr>
-                <td>
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></img>
+                <td>{
+                     imagen !='' && <RenderImg imagen={imagen}></RenderImg>
+                    }
+                   
                     <a href="#" className="user-link">{nombre}</a>
+                    {activo ? <div className="badge text-white" style={{ top: "0.5rem", right: "0.5rem",backgroundColor:'#00B020' }}>Activo</div> : <div className="badge text-white" style={{ top: "0.5rem", right: "0.5rem",backgroundColor:'#FF0206' }}>De Baja</div>}
                 </td>
                 <td>
                     {descripcion}
@@ -30,24 +55,9 @@ const ProductVendedor = ({nombre,descripcion, categoria, stock, precio ,id,numer
                  <span className="label label-default">{categoria}</span>
                 </td>
                 <td style={{width:" 20%"}}>
-                    <a href="#" className="table-link">
-                        <span className="fa-stack">
-                            <i className="fa fa-square fa-stack-2x"></i>
-                            <i className="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-                        </span>
-                    </a>
-                    <a href="#" className="table-link">
-                        <span className="fa-stack">
-                            <i className="fa fa-square fa-stack-2x"></i>
-                            <i className="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                        </span>
-                    </a>
-                    <button onClick={deleteproduct} className="table-link danger">
-                        <span className="fa-stack">
-                            <i className="fa fa-square fa-stack-2x"></i>
-                            <i className="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                        </span>
-                    </button>
+                    {activo && <button onClick={()=>deleteproduct(id)} className="table-link danger">
+                    <i class="fa-solid fa-trash-can" style={{fontSize :'20px'}}></i>
+                    </button>}
                 </td>
             </tr>
       </>

@@ -2,28 +2,26 @@
     import React from "react";
     import Header from "../header";
     import { useState,useEffect } from 'react';
-    import { listproductpendingSeller } from "../../services/service";
+    import { getListpendingshopping } from "../../services/service";
     import ReactPaginate from "react-paginate";
-    import ProductSetDate from "./productSetDate";
+    import Pendingshopping from "./pendingshopping";
   // This values are the props in the UI
   
-    export default function ProductPending() {
-      const [allproduct, setAllProduct] = useState([
+    export default function Pendingshoppinglist() {
+      const [allproduct, setAllproduct] = useState([
       ]);
     const [pageNumber, setPageNumber] = useState(0);
-    const [numerDelete, setNumerDelete] = useState(0);
     
     const productPerPage = 12;
     const pagesVisited = pageNumber * productPerPage;
     useEffect(() => {
       try {
-          console.log(numerDelete)
-        async function getListProduct() {
-          const res = await listproductpendingSeller()
+        async function Listpendingshopping() {
+          const res = await getListpendingshopping()
           const arrprod = res[1];
-          setAllProduct(arrprod)
+          setAllproduct(arrprod)
         }
-        getListProduct()
+        Listpendingshopping()
       } catch (error) {
         console.log(error)
       }
@@ -34,21 +32,12 @@
     const changePage = ({ selected }) => {
       setPageNumber(selected);
     };
-    const deleteproduct = async(id) =>{
-      try{
-          setNumerDelete(numerDelete+1);
-          const res = await deleteProductVendedor(id);
-          window.location.reload(true);
-      }catch(error){
-  
-      }
-  }
  
     const displayUsers = allproduct
     .slice(pagesVisited, pagesVisited + productPerPage)
     .map((p) => {
       return (
-        <ProductSetDate key={p.id} id={p.id} nombreProducto={p.nombreProducto} total={p.total} tipoEntrea={p.entrega.tipoEntrea} fecha={p.fecha} setAllProduct={setAllProduct} allproduct={allproduct}></ProductSetDate>
+            <Pendingshopping id={p.id} fecha={p.fecha} nombreProducto={p.nombreProducto} cantidad={p.cantidad} total={p.total} tipoEntrega={p.entrega.tipoEntrea} allproduct={allproduct} setAllproduct={setAllproduct}></Pendingshopping>
       ); 
     });
   
@@ -64,11 +53,12 @@
                                     <thead>
                                         <tr>
                                           
-                                            <th><span>Nombre</span></th>
-                                            <th ><span>Precio</span></th>
-                                            <th><span>Metodo Entrega</span></th>
+                                            <th><span>Nombre Producto</span></th>
+                                            <th ><span>Cantidad</span></th>
+                                            <th><span>Precio</span></th>
                                             <th><span>Fecha</span></th>
-                                            <th>Asignar fecha</th>
+                                            <th><span>Tipo de entrega</span></th>
+                                            <th><span>Confirmar entrega</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>

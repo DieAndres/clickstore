@@ -12,6 +12,7 @@ const ListProductVendedor= () =>{
   const [pageNumber, setPageNumber] = useState(0);
   const [numerDelete, setNumerDelete] = useState(0);
   
+  
   const productPerPage = 12;
   const pagesVisited = pageNumber * productPerPage;
   useEffect(() => {
@@ -43,49 +44,13 @@ const ListProductVendedor= () =>{
 
     }
 }
+
   const displayUsers = allproduct
   .slice(pagesVisited, pagesVisited + productPerPage)
   .map((p) => {
     return (
         <>
-             <tr key={p.id}>
-                <td>
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></img>
-                    <div>
-                        <div className="user-link">
-                            <p>{p.nombre}</p>
-                            {p.activo== true ? <p className="badge text-white position-absolute" style={{backgroundColor:'#00B611',marginLeft:'1rem',marginBottom:'0' }}>Activo</p> : <p className="badge text-white position-absolute" style={{backgroundColor:'#FA0105',marginLeft:'1rem',marginBottom:'0' }}>De baja</p>}
-                        </div>
-                        
-                    </div>
-                    
-                </td>
-                <td>
-                    {p.descripcion}
-                </td>
-                <td className="text-center">
-                    <span className="label label-default">{p.precio}</span>
-                </td>
-                <td>
-                    <span className="label label-default">{p.stock}</span>
-                </td>
-                <td>
-                 <span className="label label-default">{p.categoria}</span>
-                </td>
-                <td style={{width:" 20%"}}>
-                    <button style={{padding:"0px"}} className="table-link">
-                        <span className="fa-stack">
-                        <i style={{color: "#646cff"}} className="fa-sharp fa-solid fa-pen-to-square"></i>
-                        </span>
-                    </button>
-                    <button style={{padding:"0px",fontSize :"20px"}} onClick={()=>deleteproduct(p.id)} className="table-link">
-                        <span className="fa-stack">
-                            
-                            <i style={{color: "#646cff"}} className="fa-solid fa-trash-can"></i>
-                        </span>
-                    </button>
-                </td>
-            </tr>
+            <ProductVendedor id={p.id} nombre={p.nombre} imagen={p.imagenesUrl} activo={p.activo} descripcion={p.descripcion} precio={p.precio} stock={p.stock} categoria={p.categoria}></ProductVendedor>
       </>
     ); 
   });
@@ -132,6 +97,7 @@ const ListProductVendedor= () =>{
                   activeClassName={"paginationActive"}
               />
           </div>
+         
       </>
   );
 }

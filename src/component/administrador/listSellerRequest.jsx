@@ -2,53 +2,42 @@
     import React from "react";
     import Header from "../header";
     import { useState,useEffect } from 'react';
-    import { listproductpendingSeller } from "../../services/service";
+    import { listSellerRquest } from "../../services/service";
     import ReactPaginate from "react-paginate";
-    import ProductSetDate from "./productSetDate";
+    import SellerRequest from "./sellerRequest";
   // This values are the props in the UI
   
-    export default function ProductPending() {
-      const [allproduct, setAllProduct] = useState([
+    export default function ListSellerRequest() {
+      const [alluser, setAlluser] = useState([
       ]);
     const [pageNumber, setPageNumber] = useState(0);
-    const [numerDelete, setNumerDelete] = useState(0);
     
     const productPerPage = 12;
     const pagesVisited = pageNumber * productPerPage;
     useEffect(() => {
       try {
-          console.log(numerDelete)
-        async function getListProduct() {
-          const res = await listproductpendingSeller()
+        async function getListSellerRequest() {
+          const res = await listSellerRquest()
           const arrprod = res[1];
-          setAllProduct(arrprod)
+          setAlluser(arrprod)
         }
-        getListProduct()
+        getListSellerRequest()
       } catch (error) {
         console.log(error)
       }
   
     }, []);
-    const pageCount = Math.ceil(allproduct.length / productPerPage);
+    const pageCount = Math.ceil(alluser.length / productPerPage);
   
     const changePage = ({ selected }) => {
       setPageNumber(selected);
     };
-    const deleteproduct = async(id) =>{
-      try{
-          setNumerDelete(numerDelete+1);
-          const res = await deleteProductVendedor(id);
-          window.location.reload(true);
-      }catch(error){
-  
-      }
-  }
  
-    const displayUsers = allproduct
+    const displayUsers = alluser
     .slice(pagesVisited, pagesVisited + productPerPage)
     .map((p) => {
       return (
-        <ProductSetDate key={p.id} id={p.id} nombreProducto={p.nombreProducto} total={p.total} tipoEntrea={p.entrega.tipoEntrea} fecha={p.fecha} setAllProduct={setAllProduct} allproduct={allproduct}></ProductSetDate>
+            <SellerRequest key={p.idVendedor} idVendedor={p.idVendedor} nombreComercial={p.nombreComercial} habilitado={p.habilitado} alluser={alluser} setAlluser={setAlluser}></SellerRequest>
       ); 
     });
   
@@ -64,11 +53,10 @@
                                     <thead>
                                         <tr>
                                           
-                                            <th><span>Nombre</span></th>
-                                            <th ><span>Precio</span></th>
-                                            <th><span>Metodo Entrega</span></th>
-                                            <th><span>Fecha</span></th>
-                                            <th>Asignar fecha</th>
+                                            <th><span>Id Vendedor</span></th>
+                                            <th ><span>Nombre Comercio</span></th>
+                                            <th><span>Aprobar/Rechazar</span></th>
+                                            <th><span>Confirmar</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>

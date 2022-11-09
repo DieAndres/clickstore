@@ -1,6 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react'
-import { agregarDireccion } from '../services/service';
+import { agregarDireccion } from '../../services/service';
+import { Noti,NotiError } from '../Notification';
 const AddDireccion = (props) =>{
   const [datos, setDatos] = useState({
     calle:'',
@@ -26,7 +27,11 @@ const AddDireccion = (props) =>{
     try{
       console.log(datos)
       const resp = await agregarDireccion(datos);
-      setMensaje(resp)
+      if(resp[0] == "Se ha registrado la/s direccion/es"){
+        Noti('Direccion agregada');
+      }else{
+        NotiError('Error al agregar direccion')
+      }
       setDatos({
         ...datos,
         calle:'',

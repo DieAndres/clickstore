@@ -44,7 +44,7 @@
             const res = await getDireccion();
             setDirecciones(res)
           }
-          getListDireccion()
+         // getListDireccion()
         } catch (error) {
           console.log(error)
         }
@@ -60,15 +60,13 @@
       }
       const RenderDireccion = () =>{
         const listItems = direcciones.map((d) => {
-          return(
-          <option value={d.id}>{d.ciudad}-{d.barrio}-{d.calle}-{d.numero}-{d.apto}</option>
-          )
-        
+          return( <option key={d.id} value={d.id}>{d.ciudad}-{d.barrio}-{d.calle}-{d.numero}-{d.apto}</option>)
+         
       }
         )
         return (
           <select className="form-select" aria-label="Default select example" onChange={handleChangeSelect}>
-            <option selected>Selecciona direccion de envio</option>
+            <option defaultValue>Selecciona direccion de envio</option>
             {listItems}
           </select>
         );
@@ -86,14 +84,14 @@
                 <div className="card" style={{ borderRadius: "10px" }}>
                   <div className="card-header px-4 py-5">
                     {
-                      cantproductos == 0 ? <h5 className="text-muted mb-0">No hay ordenes para listar</h5> : <h5 className="text-muted mb-0">Thanks for your Order, <span style={{ color: "#a8729a" }} >Anna</span>!</h5>
+                      cantproductos == 0 ? <h5 className="text-muted mb-0">No hay ordenes para listar</h5> : <h5 className="text-muted mb-0">Gracias por tu Orden, <span style={{ color: "#a8729a" }} >Anna</span>!</h5>
                     }
                   </div>
                   <div className="card-body p-4">
-                    <div className="d-flex justify-content-between align-items-center mb-4">
-                      <p className="lead fw-normal mb-0" style={{ color: "#a8729a" }} >Receipt</p>
+                    <div className="d-flex justify-content-between align-items-center mb-4 flex-column ">
+                      <p className="lead fw-normal mb-2" style={{ color: "#a8729a" }} >Metodo de Entrega</p>
                         <RenderDireccion></RenderDireccion>
-                      <p className="small text-muted mb-0">Cantidad de productos: {cantproductos}</p>
+                      <p className="lead fw-normal mt-2">Cantidad de productos: {cantproductos}</p>
                     </div>
                     {productos.map((element, index) => (
                       <Productpending key={index} cantidad={element.cantidad} id={element.id} total={element.total} nombre={element.nombreProducto} fecha={element.fecha} metodoentrega={element.metodosEntrega} sendpro={sendpro} setSendpro={setSendpro} dire={dire}></Productpending>
