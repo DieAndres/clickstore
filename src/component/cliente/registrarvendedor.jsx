@@ -28,6 +28,7 @@ const RegistroVendedor = (props) => {
     console.log(datos)
   }
   let handleChange = (i, e) => {
+    debugger
     let newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
     setFormValues(newFormValues);
@@ -52,25 +53,41 @@ const RegistroVendedor = (props) => {
   }
 
   let handleSubmit = async (event) => {
+    debugger
     try {
-      debugger
-      const resp = await VendedorRegistro(datos,formValues);
-      //setMensaje(resp)
-      setDatos({
-        ...datos,
-        nombreComercial: '',
-        envios: false
-      })
-      if(resp[0] == 'Vendedor registrado'){
-        setRenderproducto(true);
+      if(datos.nombreComercial==''){
+        NotiError('Debe ingresar nombre del comercio')
       }else{
-        NotiError('Error al registrarse como vendedor');
-      }
-      
+        const resp = await VendedorRegistro(datos,formValues);
+        if(resp[0] == 'Vendedor registrado'){
+          setRenderproducto(true);
+        }else{
+          NotiError('Error al registrarse como vendedor');
+        }
+      } 
     } catch (error) {
       console.log(error)
     }
+    setDatos({
+      ...datos,
+      nombreComercial: '',
+      envios: false
+    })
   }
+  /*const validarCamposDir = (formValues) =>{
+    if(formValues[0].calle==''){
+      return 'Debe ingresar calle'
+    }
+    if(formValues[0].numero ==''){
+      return 'Debe ingresar numero'
+    }
+    if(formValues[0].apto){
+      return 'Debe ingresar '
+    }
+    if(formValues[0].barrio)
+    if(formValues[0].ciudad)
+    if(formValues[0].departamento)
+  }*/
   const finalizarRegistro = () =>{
     debugger
     navigate('/home')

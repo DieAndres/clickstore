@@ -18,8 +18,11 @@
       try {
         async function getListSellerRequest() {
           const res = await listSellerRquest()
-          const arrprod = res[1];
-          setAlluser(arrprod)
+          if(res[0]!="No se han encontrado usuarios para listar"){
+            const arrprod = res[1];
+            setAlluser(arrprod)
+          }
+          
         }
         getListSellerRequest()
       } catch (error) {
@@ -27,6 +30,7 @@
       }
   
     }, []);
+    
     const pageCount = Math.ceil(alluser.length / productPerPage);
   
     const changePage = ({ selected }) => {

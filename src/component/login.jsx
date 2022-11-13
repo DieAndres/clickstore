@@ -3,14 +3,18 @@
 import { useState } from 'react'
 import image from "../assets/login.jpg";
 import logo from "../assets/CSFinal-3.png";
-import {Link, Navigate,useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Registro from './registro';
 import { loginUser } from '../services/service';
 import { Noti,NotiError } from './Notification';
+import Modal from 'react-bootstrap/Modal';
+import { recuperarContraseña } from '../services/service';
 const Login = () =>{
    const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
+  const [modalPass, setmodalPass] = useState(false);
+  const [mailrec, setMailrec] = useState(true);
   const [estadomail, setEstadomail] = useState(true);
   const [estadocontra, setEstadocontra] = useState(true);
   const [datoslogin, setDatoslogin] = useState({
@@ -48,6 +52,19 @@ const Login = () =>{
       if(datoslogin.contrasenialogin == '' && datoslogin.maillogin !='')   NotiError('Es necesario ingesar contraseña') 
     }
     
+  }
+  const handlrecuperar = async ()=>{
+    try{
+      debugger
+      const res = await recuperarContraseña(mailrec)
+      if(res=='Exito'){
+        Noti('Se envio un correo para continuar con la recuperación de la contraseña')
+      }else{
+        NotiError('Error al recuperar la contraseña')
+      }
+    }catch{
+
+    }
   }
     return (
       <>
@@ -87,7 +104,7 @@ const Login = () =>{
                               <button className="btn btn-info btn-block my-4" onClick={handlelogin}  type="submit" style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px" }}>Login</button>                                                      
                           </div>
 
-                          <a className="small text-muted" href="#!">¿Se te olvidó tu contraseña?</a>
+                          <a type="button" className="blink-dark" onClick={()=>setmodalPass(true)}>¿Se te olvidó tu contraseña?</a>
                           <p className="mb-5 pb-lg-2" style={{ color: "#393f81" }}>¿No tienes una cuenta?<a type="button" className="blink-dark"  onClick={() => setModalShow(true)}
                             style={{ color: "#393f81" }}> Registrarse aquí </a></p>                            
                         </form>
@@ -100,6 +117,29 @@ const Login = () =>{
             </div>
           </div>
         </section>
+
+
+        <Modal
+          show={modalPass}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+          dialogClassName="modal-30w"
+        >
+          <Modal.Header className='moda-registro-header'>
+            <Modal.Title id="contained-modal-title-vcenter" className='d-flex justify-content-between' style={{ width: '100%' }}>
+              <h5 className="modal-title" id="exampleModalLabel">Recuperar Contraseña</h5>
+              <i type="button" onClick={() => setmodalPass(false)} className="fa-solid fa-xmark"></i>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='modal-registro d-flex flex-column p-5'>
+            <div className="form-group">
+              <h4  className='text-center'>Para empezar, por favor ingresa tu e-mail </h4>
+              <input type="email" onChange={(e)=>setMailrec(e.target.value)} className="form-control" placeholder="name@example.com"></input>
+            </div>
+            <button className="btn btn-info btn-block my-4" onClick={handlrecuperar}  type="submit" style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px" }}>Recuperar</button>
+          </Modal.Body>
+        </Modal>
       </>
       );
 }

@@ -83,12 +83,13 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
         <>
         <tr>
             <td>
-               <ViewImgs></ViewImgs>
+                <ViewImgs></ViewImgs>
               
-           </td>
+            </td>
            <td>
+
                <div>
-                   <div className="user-link">
+                   <div className="text-center">
                        <p>{nombreProducto}</p>
                        
                    </div>

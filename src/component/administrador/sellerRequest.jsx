@@ -9,13 +9,14 @@ const SellerRequest = ({idVendedor,nombreComercial, habilitado,alluser,setAlluse
             debugger
             
             const res = await sellerEnable(idVendedor,aprobado)
-            let alluserG = alluser.filter(x => x.idVendedor !== idVendedor);
-            setAlluser(alluserG)
             if(res[0]=='Se ha deshabilitado al vendedor correctamente'){
+                let alluserG = alluser.filter(x => x.idVendedor !== idVendedor);
+                setAlluser(alluserG)
                 Noti('Se ha deshabilitado al vendedor correctamente')
-                
             }
             else if(res[0] == 'Se ha habilitado al vendedor correctamente'){
+                let alluserG = alluser.filter(x => x.idVendedor !== idVendedor);
+                setAlluser(alluserG)
                 Noti('Se ha habilitado al vendedor correctamente')
             }
             else{
@@ -55,7 +56,7 @@ const SellerRequest = ({idVendedor,nombreComercial, habilitado,alluser,setAlluse
                     <button style={{ padding: "0px", fontSize: "20px" }} className="table-link" onClick={handlesend}>
                         <span className="fa-stack">
 
-                   <i class="fa-solid fa-square-check"></i>
+                   <i className="fa-solid fa-square-check"></i>
                    </span>
                </button>
            </td>

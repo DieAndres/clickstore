@@ -28,6 +28,7 @@ const Header = () =>{
                                 <li className="nav-item"> <Link className='nav-link' to='/createproduct'>Crear Producto</Link></li>
                                 <li className="nav-item"> <Link className='nav-link' to='/listProductVendedor'>Mis productos</Link></li>
                                 <li className="nav-item"> <Link className='nav-link' to='/productpendingSeller'>Confirmar Ventas</Link></li>
+                                <li className="nav-item"> <Link className='nav-link' to='/listClaim'>Gestion de Reclamos</Link></li>
                             </div>
                         </div>
             </div>
@@ -46,8 +47,10 @@ const Header = () =>{
     const MenuCliente = () =>{
         return (
             <>
-                <li className="nav-item"> <Link className='nav-link' to='/registravendedor'>Registrarse como vendedor</Link></li>
+                {tipoUser != 'ROL_VENDEDOR' ? <li className="nav-item"> <Link className='nav-link' to='/registravendedor'>Registrarse como vendedor</Link></li> :''}
                 <li className="nav-item"> <Link className='nav-link' to='/pendingshoppinglist'>Confirmar Entregas</Link></li>
+                <li className="nav-item"> <Link className='nav-link' to='/listSellerRequest'>Confirmar Vendedores</Link></li>
+                <li className="nav-item"> <Link className='nav-link' to='/listshoppinghistory'>Historial de Compras</Link></li>
             </>
         )
     }

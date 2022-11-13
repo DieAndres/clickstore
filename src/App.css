@@ -321,3 +321,31 @@
 .option i {
   font-size: 30px;
 }
+
+/*Estadisticas*/
+.post-jumper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 0 auto 2em;
+  max-width: 700px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.single-post{
+  clear: both;
+  position: relative;
+  color: #292929;
+  font-size: 18px;
+  line-height: 1.8em;
+  overflow: hidden;
+}
+.btn-graf{
+  background-color: #f8f8f9;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 10%), 0 2px 2px rgb(0 0 0 / 10%);
+}
+
+.modal-30w{
+  width: 30%;
+}

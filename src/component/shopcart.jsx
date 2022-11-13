@@ -23,12 +23,12 @@ import {
 } from "@paypal/react-paypal-js";
 import ButtonWrapper from "./paypalCart";
 import { totalizarcompra } from "../services/service";
-import { getImageProduct } from "../services/service";
+import Shopcarproduct from "./shopcarproduct";
 // This values are the props in the UI
 
   export default function ShopCart() {
     const currency = "USD";
-    const [productos, setproductos] = useState([{ cantidad: 0,id:0,idProducto:0,total:0,nombreProducto:''}]);
+    const [productos, setproductos] = useState([]);
     const [preciototal, setPreciototal] =useState(0);
     const [cantproductos, setCantProducto] =useState(0);
     const [renderPago, setRenderPago] =useState(false);
@@ -76,7 +76,7 @@ import { getImageProduct } from "../services/service";
         setCantProducto(newproductos.length)
         const res = await deleteProductCart(idProducto)
       }catch(error){
-        
+        console.log(error)
       }
   }
   let comenzarPago = async () =>{
@@ -111,48 +111,8 @@ import { getImageProduct } from "../services/service";
                           </MDBTypography>
                         </div>
                         {productos.map((element, index) => (
-                          <MDBRow className="mb-4 d-flex justify-content-between align-items-center" key={index}>
-                            <hr className="my-4" />
-                            <MDBCol md="2" lg="2" xl="2">
-                              <MDBCardImage
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                                fluid className="rounded-3" alt="Cotton T-shirt" />
-                            </MDBCol>
-                            <MDBCol md="3" lg="3" xl="3">
-                              <MDBTypography tag="h6" className="text-muted">
-                                Nombre
-                              </MDBTypography>
-                              <MDBTypography tag="h6" className="text-black mb-0">
-                                {element.nombreProducto}
-                              </MDBTypography>
-                            </MDBCol>
-                            <MDBCol md="3" lg="2" xl="2" className="">
-                              <MDBTypography tag="h6" className="text-muted">
-                                Cantidad
-                              </MDBTypography>
-                              <MDBTypography tag="h6" className="text-black mb-0">
-                                {element.cantidad}
-                              </MDBTypography>
-                            </MDBCol>
-                            <MDBCol md="3" lg="2" xl="2" className="">
-                              <MDBTypography tag="h6" className="text-muted">
-                                Precio
-                              </MDBTypography>
-                              <MDBTypography tag="h6" className="text-black mb-0">
-                                $ {element.total}
-                              </MDBTypography>
-                            </MDBCol>
-                            <MDBCol md="1" lg="1" xl="1" className="text-end">
-                              <button className="text-muted" onClick={() => removeFormFields(index)}>
-                                <MDBIcon fas icon="times" />
-                              </button>
-                            </MDBCol>
-                            <hr className="my-4" />
-                          </MDBRow>
+                          <Shopcarproduct imagenesUrl={element.dtProducto.imagenesUrl} id={element.idProducto} nombreProducto={element.nombreProducto} cantidad={element.cantidad} total={element.total}></Shopcarproduct>
                         ))}
-
-
-
                         <div className="pt-5">
                           <MDBTypography tag="h6" className="mb-0">
                             <Link className="text-body" to='/home'>

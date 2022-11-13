@@ -2,30 +2,25 @@ import React, { useState,useEffect } from "react";
 import JsonData from "../../MOCK_DATA.json";
 import ReactPaginate from "react-paginate";
 import Header from "../header";
-import ProductVendedor from "./productvendedor";
-import { AllListProductVendedor } from "../../services/service";
-import { deleteProductVendedor } from "../../services/service";
-import { searchproductseller } from "../../services/service";
+import Claim from "./claim";
+import { listclaim } from "../../services/service";
 import '../../assets/listuser.css'
-const ListProductVendedor= () =>{
+const ListClaim= () =>{
     const [allproduct, setAllProduct] = useState([
     ]);
   const [pageNumber, setPageNumber] = useState(0);
-  const [numerDelete, setNumerDelete] = useState(0);
-  const [search, setSearch] = useState('');
   
   const productPerPage = 12;
   const pagesVisited = pageNumber * productPerPage;
   useEffect(() => {
     try {
-        console.log(numerDelete)
-      async function getListProduct() {
-        const res = await AllListProductVendedor()
+      async function getListClaim() {
+        const res = await listclaim()
         debugger
-        const arrprod = res.objeto;
+        const arrprod = res[1];
         setAllProduct(arrprod)
       }
-      getListProduct()
+      getListClaim()
     } catch (error) {
       console.log(error)
     }
@@ -36,47 +31,26 @@ const ListProductVendedor= () =>{
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
-  const deleteproduct = async(id) =>{
-    try{
-        setNumerDelete(numerDelete+1);
-        const res = await deleteProductVendedor(id);
-        window.location.reload(true);
-    }catch(error){
-
-    }
-}
 
   const displayUsers = allproduct
   .slice(pagesVisited, pagesVisited + productPerPage)
   .map((p) => {
     return (
         <>
-            <ProductVendedor id={p.id} nombre={p.nombre} imagen={p.imagenesUrl} activo={p.activo} descripcion={p.descripcion} precio={p.precio} stock={p.stock} categoria={p.categoria}></ProductVendedor>
+            <Claim key={p.idCompra} idCompra={p.idCompra} estado={p.estado} resolucion={p.resolucion} descripcion={p.descripcion} fechaUltEstado={p.fechaUltEstado} id={p.infoCompra.id} fecha={p.infoCompra.fecha} nombreProducto={p.infoCompra.nombreProducto} cantidad={p.infoCompra.cantidad} total={p.infoCompra.total} metodosEntrega={p.infoCompra.metodosEntrega} entrega={p.infoCompra.entrega}></Claim>
       </>
     ); 
   });
-  const handlesearch= (event)=>{
-    setSearch(event.target.value)
-  }
-  const sendsearch = async() =>{
-    debugger
-    try{
-      const resp = await searchproductseller(search)
-      setAllProduct(resp[1])
-    }catch(error){
-      console.log(error)
-    }
-  }
   return (
     <>
       <Header></Header>
       <div className="container" style={{ marginTop: "4rem" }}>
         <div className="input-group">
           <div className="form-outline">
-            <input id="search-input" type="search" onChange={handlesearch} className="form-control"></input>
+            <input id="search-input" type="search"className="form-control"></input>
             <label className="form-label" htmlFor="form1">Search</label>
           </div>
-          <button id="search-button" onClick={sendsearch} type="button" className="btn btn-primary">
+          <button id="search-button"  type="button" className="btn btn-primary">
             <i className="fas fa-search"></i>
           </button>
         </div>
@@ -88,11 +62,11 @@ const ListProductVendedor= () =>{
                   <thead>
                     <tr>
 
-                      <th><span>Nombre</span></th>
-                      <th><span>Descripción</span></th>
-                      <th className="text-center"><span>Precio</span></th>
-                      <th><span>Stock</span></th>
-                      <th><span>Categoria</span></th>
+                      <th><span>Id Compra</span></th>
+                      <th><span>Nombre Producto</span></th>
+                      <th className="text-center"><span>Descrición</span></th>
+                      <th><span>Fecha Compra</span></th>
+                      <th><span>Precio</span></th>
                       <th>&nbsp;</th>
                     </tr>
                   </thead>
@@ -123,4 +97,4 @@ const ListProductVendedor= () =>{
   );
 }
 
-export default ListProductVendedor;
+export default ListClaim;

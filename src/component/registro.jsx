@@ -1,5 +1,4 @@
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import { Form } from 'react-bootstrap';
 import { useState } from 'react'
 import { registerUser } from '../services/service';

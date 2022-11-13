@@ -1,7 +1,10 @@
 import { useState,useEffect } from 'react';
 import { Noti, NotiError } from '../Notification';
-const Productpending = ({ cantidad, id, total, nombre, fecha,metodoentrega,setSendpro,sendpro,dire}) =>{
+import { storage } from "../firebase";
+const Productpending = ({ cantidad, id, total, nombre, fecha,metodoentrega,setSendpro,sendpro,dire,imagenesurl}) =>{
     const [cantenvios, setCantenvios] =useState([]);
+    const [imagenret, setImagenret] =useState('');
+    const [url, setUrl] =useState('');
     const tipoEnviohandle = (id,tipo) =>{
         debugger
         if(tipo=='ENVIO' && dire == 0){
@@ -18,7 +21,7 @@ const Productpending = ({ cantidad, id, total, nombre, fecha,metodoentrega,setSe
     }
     const Metodoentrega = ()=>{
         if(metodoentrega !=undefined){
-            if(metodoentrega.length){
+            if(metodoentrega.length>1){
                 return(
                     <div className="row d-flex align-items-center">
                             <div className="btn-group" >
@@ -48,6 +51,33 @@ const Productpending = ({ cantidad, id, total, nombre, fecha,metodoentrega,setSe
         const fechafor = fecha.split('T')
         return fechafor[0];
     }
+    const ViewImgs = () =>{
+        debugger
+       if(imagenesurl.length>0){
+        imagenesurl.forEach(element => {
+                if(element !=''){
+                    setImagenret(element)
+                }
+            });
+            if(imagenret != ''){
+                storage
+            .ref("images")
+            .child(imagenret)
+            .getDownloadURL()
+            .then(url => {
+               setUrl(url)
+            });
+            
+            return(
+                <img className="" style={{width: 140, height: 140}} src={url} alt="..." />
+            )
+            }else{
+                return <img className="" style={{width: 140, height: 140}} src='https://img.icons8.com/bubbles/2x/000000/product.png' alt="..." />
+            }
+          
+       }
+        
+    }
     
     return (
         <>
@@ -55,8 +85,7 @@ const Productpending = ({ cantidad, id, total, nombre, fecha,metodoentrega,setSe
                 <div className="card-body">
                     <div className="row">
                         <div className="col-md-3">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
-                                className="img-fluid" alt="Phone"></img>
+                            <ViewImgs style={{width: 140, height: 140}}></ViewImgs>
                         </div>
                         <div className="col-md-2 text-center d-flex justify-content-center align-items-center flex-column">
                             <h5 className="text-muted mb-0">Nombre</h5>

@@ -17,9 +17,10 @@
     const pagesVisited = pageNumber * productPerPage;
     useEffect(() => {
       try {
-          console.log(numerDelete)
+          
         async function getListProduct() {
           const res = await listproductpendingSeller()
+          debugger
           const arrprod = res[1];
           setAllProduct(arrprod)
         }
@@ -48,7 +49,7 @@
     .slice(pagesVisited, pagesVisited + productPerPage)
     .map((p) => {
       return (
-        <ProductSetDate key={p.id} id={p.id} nombreProducto={p.nombreProducto} total={p.total} tipoEntrea={p.entrega.tipoEntrea} fecha={p.fecha} setAllProduct={setAllProduct} allproduct={allproduct}></ProductSetDate>
+        <ProductSetDate key={p.id} id={p.id} nombreProducto={p.nombreProducto} total={p.total} tipoEntrea={p.metodosEntrega[0]} fecha={p.fecha} setAllProduct={setAllProduct} allproduct={allproduct} imagenesUrl={p.producto.imagenesUrl}></ProductSetDate>
       ); 
     });
   
@@ -64,7 +65,7 @@
                                     <thead>
                                         <tr>
                                           
-                                            <th><span>Nombre</span></th>
+                                            <th><span>Producto</span></th>
                                             <th ><span>Precio</span></th>
                                             <th><span>Metodo Entrega</span></th>
                                             <th><span>Fecha</span></th>

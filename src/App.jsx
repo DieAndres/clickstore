@@ -15,6 +15,8 @@ import ProductPending from './component/vendedor/productpending';
 import ListSellerRequest from './component/administrador/listSellerRequest';
 import Pendingshoppinglist from './component/cliente/pendingshoppinglist';
 import ListShoppinghistory from './component/cliente/listshoppinghistory';
+import Allstatistics from './component/vendedor/allstatistics';
+import ListClaim from './component/vendedor/listclaim';
 import { ProtectedRouteClient ,ProtectedRouteVendeor} from './component/utils/protectedRoute';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 
@@ -50,11 +52,12 @@ function App() {
             <Route path='/createproduct' element={<CreateProduct></CreateProduct>} />
             <Route path='/listProductVendedor' element={<ListProductVendedor></ListProductVendedor>} />
             <Route path='/productpendingSeller' element={<ProductPending></ProductPending>} />
+            <Route path='/listClaim' element={<ListClaim></ListClaim>} />
           </Route>
 
           
           <Route path='/listSellerRequest' element={<ListSellerRequest></ListSellerRequest>} />
-          
+          <Route path='/allstatistics' element={<Allstatistics></Allstatistics>} />
           
          
           

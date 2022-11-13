@@ -3,7 +3,6 @@ export const ProtectedRouteClient = ({
   redirectTo = "/home",
   children,
 }) => {
-  debugger
   const rol = sessionStorage.getItem('rol')
   if (rol=='ROL_CLIENTE' || rol=='ROL_VENDEDOR') {
     return children ? children : <Outlet />;

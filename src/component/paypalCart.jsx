@@ -11,7 +11,7 @@ import { Noti } from "./Notification";
 const style = {"layout":"vertical"};
 const ButtonWrapper = ({ currency, showSpinner,preciototal,renderPago }) => {
     const navigate = useNavigate();
-    const amount = preciototal;
+    const amount = (preciototal/41.45).toFixed(2);
     // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
     // This is the main reason to wrap the PayPalButtons in a new component
     const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
