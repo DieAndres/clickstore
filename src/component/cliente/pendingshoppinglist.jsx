@@ -37,7 +37,7 @@
     .slice(pagesVisited, pagesVisited + productPerPage)
     .map((p) => {
       return (
-            <Pendingshopping id={p.id} fecha={p.fecha} nombreProducto={p.nombreProducto} cantidad={p.cantidad} total={p.total} tipoEntrega={p.entrega.tipoEntrea} allproduct={allproduct} setAllproduct={setAllproduct}></Pendingshopping>
+            <Pendingshopping id={p.id} fecha={p.fecha} nombreProducto={p.nombreProducto} cantidad={p.cantidad} total={p.total} tipoEntrega={p.entrega.tipoEntrea} allproduct={allproduct} setAllproduct={setAllproduct} imagenesUrl={p.producto.imagenesUrl}></Pendingshopping>
       ); 
     });
   
@@ -52,7 +52,7 @@
                                 <table className="table user-list">
                                     <thead>
                                         <tr>
-                                          
+                                            <th><span>Producto</span></th>
                                             <th><span>Nombre Producto</span></th>
                                             <th ><span>Cantidad</span></th>
                                             <th><span>Precio</span></th>

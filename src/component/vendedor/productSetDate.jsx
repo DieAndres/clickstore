@@ -83,7 +83,11 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
         <>
         <tr>
             <td>
-                <ViewImgs></ViewImgs>
+            <div className="d-flex justify-content-center">
+            <ViewImgs></ViewImgs>
+                       
+                   </div>
+               
               
             </td>
            <td>
@@ -98,7 +102,7 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
                
            </td>
            <td className="text-center">
-               <span className="label label-default">{total}</span>
+               <span className="label label-default">${total}</span>
            </td>
            <td>
                <span className="label label-default">{tipoEntrea}</span>

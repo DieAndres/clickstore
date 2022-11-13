@@ -64,8 +64,8 @@
                                 <table className="table user-list">
                                     <thead>
                                         <tr>
-                                          
                                             <th><span>Producto</span></th>
+                                            <th><span>Nombre</span></th>
                                             <th ><span>Precio</span></th>
                                             <th><span>Metodo Entrega</span></th>
                                             <th><span>Fecha</span></th>

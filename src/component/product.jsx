@@ -95,6 +95,8 @@ const Product = ({nombre,precio,id,imagenesUrl}) =>{
                     
                 </div>
             </div>
+
+            
         </>
       );
 }

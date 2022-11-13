@@ -29,6 +29,7 @@ const Header = () =>{
                                 <li className="nav-item"> <Link className='nav-link' to='/listProductVendedor'>Mis productos</Link></li>
                                 <li className="nav-item"> <Link className='nav-link' to='/productpendingSeller'>Confirmar Ventas</Link></li>
                                 <li className="nav-item"> <Link className='nav-link' to='/listClaim'>Gestion de Reclamos</Link></li>
+                                <li className="nav-item"> <Link className='nav-link' to='/qualificationClient'>Calificar Cliente</Link></li>
                             </div>
                         </div>
             </div>

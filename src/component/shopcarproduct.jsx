@@ -49,10 +49,10 @@ const Shopcarproduct = ({id,nombreProducto,cantidad,total,imagenesUrl}) =>{
             });
             
             return(
-                <img className="" style={{height:'130px'}} src={url} alt="..." />
+                <img className="" style={{height:'130px',width:'130px'}} src={url} alt="..." />
             )
             }else{
-                return <img className="" style={{height:'130px'}} src='https://img.icons8.com/bubbles/2x/000000/product.png' alt="..." />
+                return <img className="" style={{height:'130px',width:'130px'}} src='https://img.icons8.com/bubbles/2x/000000/product.png' alt="..." />
             }
             
         }

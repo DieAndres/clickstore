@@ -655,10 +655,26 @@ export const sendClaim = async (id,metodo,mensajerec='',monto='') =>{
       mensaje[0] = res.data.mensaje;
       mensaje[1] = res.data.objeto
     }
-    
-    
+    return mensaje
+  }catch(error){
+    console.log(error)
+  }
+}
+
+
+export const qualificationClientlist = async () =>{
+  debugger
+  const mensaje = []
+  const token = sessionStorage.getItem('token')
+  try{
+    const datos = await getHeader();
+    const idClient = datos[0];
+    const res =  await axios.get("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/venta/listarVentasVendedor?idVendedor="+idClient,{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
+    mensaje[0] = res.data.mensaje;
+    mensaje[1] = res.data.objeto
    return mensaje
   }catch(error){
     console.log(error)
   }
 }
+
