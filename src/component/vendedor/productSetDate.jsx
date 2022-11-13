@@ -1,14 +1,16 @@
 import { useState,useRef } from 'react'
-import { storage } from "../firebase";
 import { Noti,NotiError,NotiLoading } from '../Notification';
 import Modal from 'react-bootstrap/Modal';
 import { Form } from 'react-bootstrap';
 import { setFechaentrega } from '../../services/service';
 import { toast } from "react-toastify";
-const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduct,allproduct}) =>{
+import { storage } from "../firebase";
+const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduct,allproduct,imagenesUrl}) =>{
     const [modalShow, setModalShow] = useState(false);
     const [fecdes, setFecdes] = useState('');
     const [fechas, setFechas] = useState('');
+    const [imagenret, setImagenret] =useState('');
+    const [url, setUrl] =useState('');
     const toastId = useRef(null)
     const formatearFecha = (fecha) =>{
         debugger
@@ -49,14 +51,42 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
         }
        
     }
-    /*const setDate = (e) =>{
-        console.log(e.tar)
-    }*/
+    const ViewImgs = () =>{
+        debugger
+       if(imagenesUrl.length>0){
+        imagenesUrl.forEach(element => {
+            debugger
+                if(element !=''){
+                    setImagenret(element)
+                }
+            });
+            if(imagenret != ''){
+                storage
+            .ref("images")
+            .child(imagenret)
+            .getDownloadURL()
+            .then(url => {
+               setUrl(url)
+            });
+            
+            return(
+                <img className="" style={{width: 140, height: 140}} src={url} alt="..." />
+            )
+            }else{
+                return <img className="" style={{width: 140, height: 140}} src='https://img.icons8.com/bubbles/2x/000000/product.png' alt="..." />
+            }
+          
+       }
+        
+    }
     return (
         <>
         <tr>
+            <td>
+               <ViewImgs></ViewImgs>
+              
+           </td>
            <td>
-               <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></img>
                <div>
                    <div className="user-link">
                        <p>{nombreProducto}</p>
@@ -90,9 +120,10 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
           aria-labelledby="contained-modal-title-vcenter"
           centered
         >
-          <Modal.Header closeButton className='moda-registro-header'>
-            <Modal.Title id="contained-modal-title-vcenter">
+          <Modal.Header  className='moda-registro-header'>
+            <Modal.Title id="contained-modal-title-vcenter" className='d-flex justify-content-between' style={{width:'100%'}}>
               <h5 className="modal-title" id="exampleModalLabel">Asignar fecha de entrega</h5>
+              <i onClick={()=>setModalShow(false)} class="fa-solid fa-xmark"></i>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className='modal-registro flex-column align-items-center'>
