@@ -32,7 +32,7 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
                 const progress = Math.round(
                 (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 );
-                //setProgress(progress);
+                
             },
             error => {
                 console.log(error);
@@ -70,8 +70,15 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
     }
     let handleSubmit = async (event) => {
         try{
-            
-           const resp = await createProduct(datos,formValues);
+            debugger
+            var resp=''
+            if(cantpro != undefined){
+                 resp = await  createProduct(datos,formValues,false)
+                setCantpro(cantpro+1)
+            }else{
+                 resp = await createProduct(datos,formValues,true);
+            }
+          
             //setMensaje(resp)
             setDatos({
               ...datos,
@@ -82,9 +89,7 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
             })
             setFormValues([{ ruta: ""}]);
             document.getElementById('ruta').value = ''
-            if(cantpro != undefined){
-                setCantpro(cantpro+1)
-            }
+            
            if(resp[0]=='Exito'){
                 Noti("Producto creado correctamente")
             }else{

@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import { Form } from 'react-bootstrap';
 import { startclaim } from '../../services/service';
 import { storage } from "../firebase";
-const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega,allproduct,setAllproduct,imagenesUrl}) =>{    
+const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega,allproduct,setAllproduct,imagenesUrl,reclamocli}) =>{    
     const [modalShow, setModalShow] = useState(false);
     const [reclamo, setReclamo] = useState('');
     const [imagenret, setImagenret] =useState('');
@@ -19,7 +19,6 @@ const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega
     }
     const handlesubmit = async () =>{
         try{
-            debugger
             const res = await startclaim(id,reclamo)
             if(res[0]=='Exito'){
                 Noti('Reclamo Realizado')
@@ -57,6 +56,44 @@ const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega
           
        }
         
+    }
+
+    const RenderBodyreclamo = () =>{
+        if(reclamocli !=null){
+            return(
+                <section style={{width:'100%'}}>
+                        
+
+                        <div className="">
+                            
+                            <div className="">
+                                <div className="p-3" style={{ backgroundColor: "#eee" }}>
+                                    <span className="fw-bold">Descripción de la compra</span>
+                                    <div className="d-flex justify-content-between mt-2">
+                                        <span>FECHA ULTIMO ESTADO: </span> <span>{reclamocli.fechaUltEstado}</span>
+                                    </div>
+                                    <div className="d-flex justify-content-between mt-2">
+                                        <span>ESTADO: </span> <span>{reclamocli.estado}</span>
+                                    </div>
+                                    <div className="d-flex flex-column">
+                                        <span>DESCRIPCIÓN: </span> <span style={{marginLeft:'2rem'}}>{reclamocli.descripcion}</span>
+                                    </div>                                   
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+            )
+        }else{
+            return(
+                <Modal.Body className='modal-registro flex-column align-items-center' style={{ width: '100%' }}>
+                    <Form.Group controlId="dob" style={{ width: '100%' }}>
+                        <label htmlFor="exampleFormControlTextarea1">Descripción</label>
+                        <textarea className="form-control" id="exampleFormControlTextarea1" onChange={(e) => setReclamo(e.target.value)} rows="3"></textarea>
+                    </Form.Group>
+                    <button className="btn btn-info btn-block my-4" onClick={handlesubmit} style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px", width: '50%' }}>CONFIRMAR</button>
+                </Modal.Body>
+            )
+        }
     }
     return (
         <>
@@ -99,12 +136,9 @@ const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega
                         <i onClick={() => setModalShow(false)} className="fa-solid fa-xmark"></i>
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body className='modal-registro flex-column align-items-center'>
-                    <Form.Group controlId="dob" style={{ width: '50%' }}>
-                        <label htmlFor="exampleFormControlTextarea1">Descripción</label>
-                        <textarea className="form-control" id="exampleFormControlTextarea1" onChange={(e) => setReclamo(e.target.value)} rows="3"></textarea>
-                    </Form.Group>
-                    <button className="btn btn-info btn-block my-4" onClick={handlesubmit} style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px", width: '50%' }}>CONFIRMAR</button>
+                <Modal.Body className='modal-registro flex-column align-items-center' style={{width:'100%'}}>
+                    
+                      <RenderBodyreclamo></RenderBodyreclamo>
                 </Modal.Body>
             </Modal>
         </>

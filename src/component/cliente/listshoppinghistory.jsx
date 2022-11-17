@@ -39,7 +39,7 @@
     .slice(pagesVisited, pagesVisited + productPerPage)
     .map((p) => {
       return (
-           <Shoppinghistory key={p.id} id={p.id} fecha={p.fecha} nombreProducto={p.nombreProducto} cantidad={p.cantidad} total={p.total} metodosEntrega={p.metodosEntrega} allproduct={allproduct} setAllproduct={setAllproduct} imagenesUrl={p.producto.imagenesUrl}></Shoppinghistory>
+           <Shoppinghistory key={p.id} id={p.id} fecha={p.fecha} nombreProducto={p.nombreProducto} cantidad={p.cantidad} total={p.total} metodosEntrega={p.metodosEntrega} allproduct={allproduct} setAllproduct={setAllproduct} imagenesUrl={p.producto.imagenesUrl} reclamocli={p.reclamo}></Shoppinghistory>
       ); 
     });
     const handlesearch= (event)=>{

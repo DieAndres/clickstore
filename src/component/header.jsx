@@ -1,12 +1,16 @@
 import {Link,useNavigate} from 'react-router-dom';
 import logo from "../assets/CSFinal-3.png";
 import React, { useState,useEffect  } from 'react';
+import { getHeader } from '../services/service';
 const Header = () =>{
     const [tipoUser, setTipoUser] = useState('');
     const navigate = useNavigate();
       useEffect(() => {
-        const rol = sessionStorage.getItem('rol')
-        setTipoUser(rol)
+        async function getRol() {
+            const res = await getHeader()
+            setTipoUser(res[1])
+          }
+          getRol()
       }, []);
     const logout = () =>{
         sessionStorage.setItem("user",'');
@@ -17,6 +21,7 @@ const Header = () =>{
         return (
             <React.Fragment>
                 <MenuCliente></MenuCliente>
+                <MenuAdministrador></MenuAdministrador>
             <div className="nav-item">
                 
                         <div className="dropdown show">
@@ -40,8 +45,20 @@ const Header = () =>{
         debugger
         return (
             <>
-                <li className="nav-item"> <Link className='nav-link' to='/listuser'>Busqueda Usuarios</Link></li>
-                <li className="nav-item"> <Link className='nav-link' to='/createadmin'>Crear Administrador</Link></li>
+                <div className="nav-item">
+
+                    <div className="dropdown show">
+                        <a className="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Administrador
+                        </a>
+
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li className="nav-item"> <Link className='nav-link' to='/createadmin'>Crear Administrador</Link></li>
+                            <li className="nav-item"> <Link className='nav-link' to='/listSellerRequest'>Confirmar Vendedores</Link></li>
+                            <li className="nav-item"> <Link className='nav-link' to='/userlist'>Gestion de Usuarios</Link></li>
+                        </div>
+                    </div>
+                </div>
             </>
         )
     }
@@ -50,8 +67,9 @@ const Header = () =>{
             <>
                 {tipoUser != 'ROL_VENDEDOR' ? <li className="nav-item"> <Link className='nav-link' to='/registravendedor'>Registrarse como vendedor</Link></li> :''}
                 <li className="nav-item"> <Link className='nav-link' to='/pendingshoppinglist'>Confirmar Entregas</Link></li>
-                <li className="nav-item"> <Link className='nav-link' to='/listSellerRequest'>Confirmar Vendedores</Link></li>
                 <li className="nav-item"> <Link className='nav-link' to='/listshoppinghistory'>Historial de Compras</Link></li>
+                <li className="nav-item"> <Link className='nav-link' to='/qualificationSeller'>Calificar Vendedor</Link></li>
+                
             </>
         )
     }

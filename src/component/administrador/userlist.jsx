@@ -1,24 +1,26 @@
 import React, { useState,useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import Header from "../header";
-import { qualificationClientlist } from "../../services/service";
-import QualificationClient from "./qualificationClient";
 import '../../assets/listuser.css'
-const QualificationClientList= () =>{
-    const [allproduct, setAllProduct] = useState([
+import { userListAll } from "../../services/service";
+import CreateAdmin from "./createAdmin";
+import User from "./user";
+const UserList= () =>{
+    const [alluser, setAllUser] = useState([
     ]);
   const [pageNumber, setPageNumber] = useState(0);
   const [numerDelete, setNumerDelete] = useState(0);
   const [search, setSearch] = useState('');
-  
+  const [modalShow, setModalShow] = useState(false);
+
   const productPerPage = 12;
   const pagesVisited = pageNumber * productPerPage;
   useEffect(() => {
     try {
       async function getListProduct() {
-        const res = await qualificationClientlist()
+        const res = await userListAll()
         const arrprod = res[1];
-        setAllProduct(arrprod)
+        setAllUser(arrprod)
       }
       getListProduct()
     } catch (error) {
@@ -26,37 +28,27 @@ const QualificationClientList= () =>{
     }
 
   }, []);
-  const pageCount = Math.ceil(allproduct.length / productPerPage);
+  const pageCount = Math.ceil(alluser.length / productPerPage);
 
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
   
-  const displayUsers = allproduct
+  const displayUsers = alluser
   .slice(pagesVisited, pagesVisited + productPerPage)
   .map((p) => {
     return (
         <>
-            <QualificationClient  key={p.id} idCliente={p.idCliente} id={p.id} nombre={p.nombreProducto} imagenesUrl={p.producto.imagenesUrl} descripcion={p.producto.descripcion} precio={p.total} categoria={p.producto.categoria} calificacionCli={p.calificacionCli}></QualificationClient>
-      </>
+           <User key={p.idUsr} id={p.idUsr} correo={p.correo} rol={p.rol} nombre={p.nombre} bloqueado={p.bloqueado} alluser={alluser} setAllUser={setAllUser}></User> 
+        </>
     ); 
   });
-  const handlesearch= (event)=>{
-    setSearch(event.target.value)
-  }
-  const sendsearch = async() =>{
-    debugger
-    try{
-      const resp = await searchproductseller(search)
-      setAllProduct(resp[1])
-    }catch(error){
-      console.log(error)
-    }
-  }
+ 
   return (
     <>
       <Header></Header>
       <div className="container" style={{ marginTop: "4rem" }}>
+      <button className="btn btn-info btn-block my-4 d-flex flex-column justify-content-center align-items-center" onClick={()=>setModalShow(true)} style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px", width: '20%' }}><i style={{fontSize:'20px'}} class="fa-solid fa-user-plus"></i>CREAR ADMINISTRADOR </button> 
         <div className="row">
           <div className="col-lg-12">
             <div className="main-box clearfix">
@@ -64,13 +56,11 @@ const QualificationClientList= () =>{
                 <table className="table user-list">
                   <thead>
                     <tr>
-
-                      <th><span>Producto</span></th>
+                      <th><span>Id Usuario</span></th>
                       <th><span>Nombre</span></th>
-                      <th className="text-center"><span>Descripción</span></th>
-                      <th><span>Precio</span></th>
-                      <th><span>Categoria</span></th>
-                      <th><span>Calificar/Eliminar</span></th>
+                      <th><span>Correo</span></th>
+                      <th><span>Rol</span></th>
+                      <th><span>Activo/Bloqueado</span></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -95,9 +85,9 @@ const QualificationClientList= () =>{
           activeClassName={"paginationActive"}
         />
       </div>
-
+      <CreateAdmin modalShow={modalShow} setModalShow={setModalShow}></CreateAdmin>
     </>
   );
 }
 
-export default QualificationClientList;
+export default UserList;

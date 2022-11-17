@@ -4,8 +4,8 @@ import { Rating } from 'react-simple-star-rating'
 import { storage } from "../firebase";
 import Modal from 'react-bootstrap/Modal';
 import { Form } from 'react-bootstrap';
-import { qualificationClient,qualificationClientMod, qualificationClientDelete } from '../../services/service';
-const QualificationClient = ({id, nombre, imagenesUrl, descripcion, precio, categoria,calificacionCli,idCliente}) =>{
+import { qualificationSeller,qualificationSellerMod,qualificationSellerDelete} from '../../services/service';
+const QualificationSeller = ({id, nombre, imagenesUrl, descripcion, precio, categoria,calificacionVen,idVendedor}) =>{
     const [modalShow, setModalShow] = useState(false);
     const [imagenret, setImagenret] =useState('');
     const [url, setUrl] =useState('');
@@ -14,10 +14,10 @@ const QualificationClient = ({id, nombre, imagenesUrl, descripcion, precio, cate
     const [initRating, setInitRating] =useState();
     debugger
     useEffect(() => {
-        if(calificacionCli != undefined){
-            if(calificacionCli.estrellas != undefined){
-                setInitRating(calificacionCli.estrellas)
-                setComentario(calificacionCli.comentario)
+        if(calificacionVen != undefined){
+            if(calificacionVen.estrellas != undefined){
+                setInitRating(calificacionVen.estrellas)
+                setComentario(calificacionVen.comentario)
             }
         }
       }, []);
@@ -60,7 +60,7 @@ const QualificationClient = ({id, nombre, imagenesUrl, descripcion, precio, cate
       const handlesubmit = async ()=>{
         try{
             if(rating >0){
-                const res = await qualificationClient(id,rating,comentario,idCliente)
+                const res = await qualificationSeller(id,rating,comentario,idVendedor)
                 if(res=='Exito'){
                     Noti('Calificación enviada');
                     setModalShow(false)
@@ -79,7 +79,7 @@ const QualificationClient = ({id, nombre, imagenesUrl, descripcion, precio, cate
       }
       const handlemodi = async () =>{
         try{
-            const res = await qualificationClientMod(id,rating,comentario,idCliente)
+            const res = await qualificationSellerMod(id,rating,comentario,idVendedor)
             if(res=='Exito'){
                 debugger
                 Noti('Calificación modificada');
@@ -95,7 +95,7 @@ const QualificationClient = ({id, nombre, imagenesUrl, descripcion, precio, cate
       const deletequalification = async () =>{
         debugger
         try{
-            const res = await qualificationClientDelete(id,rating,comentario,idCliente)
+            const res = await qualificationSellerDelete(id,rating,comentario,idVendedor)
             if(res=='Exito'){
                 Noti('Calificación eliminada');
                 setModalShow(false)
@@ -174,4 +174,4 @@ const QualificationClient = ({id, nombre, imagenesUrl, descripcion, precio, cate
       );
 }
 
-export default QualificationClient;
+export default QualificationSeller;

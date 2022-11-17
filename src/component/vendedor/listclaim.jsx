@@ -45,15 +45,6 @@ const ListClaim= () =>{
     <>
       <Header></Header>
       <div className="container" style={{ marginTop: "4rem" }}>
-        <div className="input-group">
-          <div className="form-outline">
-            <input id="search-input" type="search"className="form-control"></input>
-            <label className="form-label" htmlFor="form1">Search</label>
-          </div>
-          <button id="search-button"  type="button" className="btn btn-primary">
-            <i className="fas fa-search"></i>
-          </button>
-        </div>
         <div className="row">
           <div className="col-lg-12">
             <div className="main-box clearfix">
@@ -67,6 +58,7 @@ const ListClaim= () =>{
                       <th className="text-center"><span>Descrición</span></th>
                       <th><span>Fecha Compra</span></th>
                       <th><span>Precio</span></th>
+                      <th><span>Estado</span></th>
                       <th>&nbsp;</th>
                     </tr>
                   </thead>

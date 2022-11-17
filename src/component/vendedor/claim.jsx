@@ -38,7 +38,21 @@ const Claim = ({idCompra,estado,resolucion,descripcion,fechaUltEstado,id,fecha,n
             NotiError("Debe seleccionar un metodo primero")
         }
     }
-   
+    const RenderEstado = () =>{
+        debugger
+        if(estado =='INICIADO'){
+             return  <p style={{color:'#0334F9',fontWeight:'700'}}>INICIADO</p>
+        }
+        else if(estado == 'ACEPTADO'){
+             return <p style={{color:'#00B020',fontWeight:'700'}}>ACEPTADO</p>
+        }
+        else if(estado == 'PENDIENTE'){
+             return  <p style={{color:'#FCF107',fontWeight:'700'}}>PENDIENTE</p>
+        }
+        else{
+            return  <p style={{color:'#00B020',fontWeight:'700'}}>FINALIZADO</p>
+        }
+    }
     return (
         <>
             <tr>
@@ -57,11 +71,14 @@ const Claim = ({idCompra,estado,resolucion,descripcion,fechaUltEstado,id,fecha,n
                 <td>
                     <span className="label label-default">${total}</span>
                 </td>
+                <td>
+                    <span className="label label-default"><RenderEstado></RenderEstado></span>
+                </td>
                 <td style={{ width: " 20%" }}>
                     <button style={{ padding: "0px", fontSize: "20px" }} onClick={() => setModalShow(true)} className="table-link">
                         <span className="fa-stack">
 
-                            <i className="fa-solid fa-square-check"></i>
+                        <i className="fa-solid fa-comment"></i>
                         </span>
                     </button>
                 </td>

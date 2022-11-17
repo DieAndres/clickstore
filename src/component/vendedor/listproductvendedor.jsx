@@ -92,7 +92,7 @@ const ListProductVendedor= () =>{
                       <th className="text-center"><span>Precio</span></th>
                       <th><span>Stock</span></th>
                       <th><span>Categoria</span></th>
-                      <th>&nbsp;</th>
+                      <th>Eliminar/Modificar</th>
                     </tr>
                   </thead>
                   <tbody>

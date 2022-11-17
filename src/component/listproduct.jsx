@@ -109,7 +109,7 @@ const ListProduct = () =>{
 
               ELECTRODOMÉSTICOS
 
-              <i class="fa-solid fa-shirt"></i>
+              <i class="fa-solid fa-tv-retro"></i>
             </label>
           </div>
           <div>

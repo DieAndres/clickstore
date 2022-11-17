@@ -1,10 +1,11 @@
 import React, { useState,useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import Header from "../header";
-import { qualificationClientlist } from "../../services/service";
-import QualificationClient from "./qualificationClient";
+import QualificationSeller from "./qualificationSeller";
 import '../../assets/listuser.css'
-const QualificationClientList= () =>{
+import { listshoppinghistory } from "../../services/service";
+const QualificationSellerList= () =>{
+    debugger
     const [allproduct, setAllProduct] = useState([
     ]);
   const [pageNumber, setPageNumber] = useState(0);
@@ -16,7 +17,7 @@ const QualificationClientList= () =>{
   useEffect(() => {
     try {
       async function getListProduct() {
-        const res = await qualificationClientlist()
+        const res = await listshoppinghistory()
         const arrprod = res[1];
         setAllProduct(arrprod)
       }
@@ -37,8 +38,8 @@ const QualificationClientList= () =>{
   .map((p) => {
     return (
         <>
-            <QualificationClient  key={p.id} idCliente={p.idCliente} id={p.id} nombre={p.nombreProducto} imagenesUrl={p.producto.imagenesUrl} descripcion={p.producto.descripcion} precio={p.total} categoria={p.producto.categoria} calificacionCli={p.calificacionCli}></QualificationClient>
-      </>
+            <QualificationSeller  key={p.id} idCliente={p.idCliente} id={p.id} nombre={p.nombreProducto} imagenesUrl={p.producto.imagenesUrl} descripcion={p.producto.descripcion} precio={p.total} categoria={p.producto.categoria} calificacionVen={p.calificacionVen} idVendedor={p.producto.idVendedor}></QualificationSeller>
+        </>
     ); 
   });
   const handlesearch= (event)=>{
@@ -100,4 +101,4 @@ const QualificationClientList= () =>{
   );
 }
 
-export default QualificationClientList;
+export default QualificationSellerList;

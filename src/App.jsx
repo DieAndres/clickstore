@@ -3,7 +3,6 @@ import reactLogo from './assets/react.svg'
 import './App.css'
 import Login from './component/login';
 import Home from './component/home';
-import Listuser from './component/listuser';
 import CreateAdmin from './component/administrador/createAdmin';
 import CreateProduct from './component/vendedor/createProduct';
 import ShopCart from './component/shopcart';
@@ -18,6 +17,8 @@ import ListShoppinghistory from './component/cliente/listshoppinghistory';
 import Allstatistics from './component/vendedor/allstatistics';
 import ListClaim from './component/vendedor/listclaim';
 import QualificationClientList from './component/vendedor/qualificationClientlist';
+import QualificationSellerList from './component/cliente/qualificationSellerlist';
+import UserList from './component/administrador/userlist';
 import { ProtectedRouteClient ,ProtectedRouteVendeor} from './component/utils/protectedRoute';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 
@@ -38,7 +39,6 @@ function App() {
         <Routes>
           <Route index element={<Login />} />
           <Route path='/home' element={<Home></Home>} />
-          <Route path='/listuser' element={<Listuser></Listuser>} />
           <Route path='/createadmin' element={<CreateAdmin></CreateAdmin>} />
           
           <Route element={<ProtectedRouteClient />}>
@@ -48,6 +48,7 @@ function App() {
             <Route path='/editperfile' element={<EditPerfile></EditPerfile>} />
             <Route path='/pendingshoppinglist' element={<Pendingshoppinglist></Pendingshoppinglist>} />
             <Route path='/listshoppinghistory' element={<ListShoppinghistory></ListShoppinghistory>} />
+            <Route path='/qualificationSeller' element={<QualificationSellerList></QualificationSellerList>} />
           </Route>
           <Route element={<ProtectedRouteVendeor />}>
             <Route path='/createproduct' element={<CreateProduct></CreateProduct>} />
@@ -60,6 +61,7 @@ function App() {
           
           <Route path='/listSellerRequest' element={<ListSellerRequest></ListSellerRequest>} />
           <Route path='/allstatistics' element={<Allstatistics></Allstatistics>} />
+          <Route path='/userlist' element={<UserList></UserList>} />
           
          
           
