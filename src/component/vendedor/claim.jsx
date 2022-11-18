@@ -7,6 +7,7 @@ const Claim = ({idCompra,estado,resolucion,descripcion,fechaUltEstado,id,fecha,n
     const [metodo, setMetodo] = useState(0);
     const [mensaje, setMensaje] = useState(0);
     const [monto, setMonto] = useState(0);
+    const [loading, setLoading] = useState(false);
     const formatearFecha = (fecha) =>{
         if(fecha !='' && fecha !=undefined){
             const fechafor = fecha.split('T')
@@ -24,12 +25,14 @@ const Claim = ({idCompra,estado,resolucion,descripcion,fechaUltEstado,id,fecha,n
     const handlesend = async() =>{
         if(metodo!=0){
             try{
+                setLoading(true)
                 const res = await sendClaim(id,metodo,mensaje,monto)
                 if(res[0]=="Exito"){
                     Noti('Se envio la gestion del reclamo con exito')
                 }else{
                     NotiError("Error al enviar la gestion del reclamo")
                 }
+                setLoading(false)
             }
             catch(error){
     
@@ -175,6 +178,7 @@ const Claim = ({idCompra,estado,resolucion,descripcion,fechaUltEstado,id,fecha,n
                             </div>
                         </div>
                     </section>
+                    {loading && <div className="loading">Loading&#8230;</div>}
                     <button className="btn btn-info btn-block my-4" onClick={handlesend} style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px", width: '50%' }}>CONFIRMAR</button>
                 </Modal.Body>
             </Modal>

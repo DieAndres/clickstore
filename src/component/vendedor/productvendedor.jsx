@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { deleteProductVendedor } from '../../services/service';
+import { deleteProductVendedor,updateProduct } from '../../services/service';
 import { storage } from "../firebase";
 import { Noti,NotiError } from '../Notification';
 import Modal from 'react-bootstrap/Modal';
@@ -74,7 +74,7 @@ const ProductVendedor = ({nombre,descripcion, categoria, stock, precio ,id,image
     let handleSubmit = async (event) => {
         try{
             
-           const resp = await createProduct(datos,formValues);
+           const resp = await updateProduct(datos,formValues,true);
             //setMensaje(resp)
             setDatos({
               ...datos,

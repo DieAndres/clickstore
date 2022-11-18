@@ -115,6 +115,69 @@ var res=''
   return mensaje;
 }
 
+export const updateProduct = async (datos,imagenes,regvend) =>{
+  debugger
+  var arrimg = []
+  console.log(datos)
+  imagenes.forEach(i => arrimg.push(i.ruta.name));
+  var mensaje = [];
+  const token = sessionStorage.getItem('token')
+  try{
+   // const datosheader = await getHeader();
+    //const idClient = datosheader[0];
+    const idClient = sessionStorage.getItem('user')
+    const datosend = {
+      "nombre": datos.nombreproducto,
+      "descripcion": datos.descripcionproducto,
+      "precio" :  datos.precioproducto,
+      "stock" :  datos.stockproducto,
+      "categoria" :  datos.categoriaproducto,
+      "activo" :  regvend,
+      //"imagenesUrl" :  arrimg,
+      "imagenesUrl" :  arrimg,
+      "idVendedor" : idClient,
+}
+const JSONdatosend = JSON.stringify(datosend);
+var res=''
+    
+   /*   res = await axios.post("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/producto/modificar",JSONdatosend, {headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}});
+    
+    mensaje[0] = res.data.mensaje;
+    mensaje[1] = res.data.objeto;
+    //subir imagenes a firebase
+    imagenes.forEach(element => {
+      debugger
+      var image = element.ruta
+      const uploadTask = storage.ref(`images/${res.data.objeto}_${image.name}`).put(image);
+      uploadTask.on(
+      "state_changed",
+      snapshot => {
+          const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          //setProgress(progress);
+      },
+      error => {
+          console.log(error);
+      },
+      () => {
+          storage
+          .ref("images")
+          .child('prueba')
+          .getDownloadURL()
+          .then(url => {
+          });
+      }
+      );
+  });*/
+  
+
+  }catch(error){
+      console.log(error)
+  }
+  return mensaje;
+}
+
 export const addProductCart = async (product) =>{
   debugger
   var mensaje =[];
@@ -851,8 +914,130 @@ export const createnewadmin = async (correo,pass) =>{
   let mensaje = ''
   const token = sessionStorage.getItem('token')
   try{
-    const res =  await axios.post("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/invitado/registrarAdmin?correo="+correo+"&pass="+pass,{},{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
+    const res =  await axios.post("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/administrador/registrarAdmin?correo="+correo+"&pass="+pass,{},{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
     mensaje = res.data.mensaje;
+   return mensaje
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const searchUser = async (correo) =>{
+  debugger
+  const mensaje = []
+  const token = sessionStorage.getItem('token')
+  try{
+    const res =  await axios.get("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/administrador/buscarUsuarios?correo="+correo,{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
+    mensaje[0] = res.data.mensaje;
+    mensaje[1] = res.data.objeto
+   return mensaje
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const getdateUser = async () =>{
+  debugger
+  var mensaje = []
+  const token = sessionStorage.getItem('token')
+  try{
+    const datos = await getHeader();
+    const idClient = datos[0];
+    const tipouser = datos[1];
+    const res =  await axios.get("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/invitado/get/"+idClient,{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
+    mensaje[0] = res.data;
+    mensaje[1] = tipouser;
+    return mensaje
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const DireccionMod = async (id,direccion) =>{
+  debugger
+  let mensaje = ''
+  const token = sessionStorage.getItem('token')
+  try{
+    const datosend = {
+      "id" : id,
+      "calle": direccion.calle,
+      "numero": direccion.numero,
+      "apto": direccion.apto,
+      "barrio" : direccion.barrio,
+      "ciudad": direccion.ciudad,
+      "departamento": direccion.departamento,
+      "principal": direccion.principal
+  
+    }
+    const JSONdatosend = JSON.stringify(datosend);
+    const res =  await axios.put("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/cliente/modificarDireccion",JSONdatosend,{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
+    mensaje = res.data.mensaje;
+   return mensaje
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const DireccionDel = async (idDir) =>{
+  debugger
+  let mensaje = ''
+  const token = sessionStorage.getItem('token')
+  try{
+    const res =  await axios.put("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/cliente/eliminarDireccion?idDireccion="+idDir,{},{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
+    mensaje = res.data.mensaje;
+   return mensaje
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const editPerfile = async (datos,fechanac) =>{
+  debugger
+  let mensaje = ''
+  let fechaG = fechanac+'T14:45:15';
+  const datosend = {
+    "id" : datos.id,  
+    "documento": datos.documento,
+    "nombre": datos.nombre,
+    "apellido": datos.apellido,
+    "fechaNacimiento": fechaG,
+
+  }
+  const JSONdatosend = JSON.stringify(datosend);
+  const token = sessionStorage.getItem('token')
+  try{
+    const res =  await axios.put("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/cliente/modificarDatos",JSONdatosend,{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
+    mensaje = res.data.mensaje;
+   return mensaje
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const cuentaDelete = async () =>{
+  debugger
+  let mensaje = ''
+  const token = sessionStorage.getItem('token')
+  try{
+    const datos = await getHeader();
+    const idClient = datos[0];
+    const res =  await axios.post("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/priv/eliminarCuenta?idUsuario="+idClient,{},{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
+    mensaje = res.data.mensaje;
+   return mensaje
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const habilitarEnviosVendedor = async (habilitado) =>{
+  debugger
+  let mensaje = ''
+  const token = sessionStorage.getItem('token')
+  try{
+    const datos = await getHeader();
+    const idClient = datos[0];
+    const res =  await axios.post("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/vendedor/cambiarEstadoEnvios?idVendedor="+idClient+"&habilitado="+habilitado,{},{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
+    mensaje = res.data.objeto;
    return mensaje
   }catch(error){
     console.log(error)

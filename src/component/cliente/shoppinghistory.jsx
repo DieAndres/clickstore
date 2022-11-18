@@ -9,6 +9,8 @@ const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega
     const [reclamo, setReclamo] = useState('');
     const [imagenret, setImagenret] =useState('');
     const [url, setUrl] =useState('');
+    const [rec, setRec] =useState('');
+    const [loading, setLoading] = useState(false);
     const formatearFecha = (fecha) =>{
         if(fecha !='' && fecha !=undefined){
             const fechafor = fecha.split('T')
@@ -19,12 +21,14 @@ const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega
     }
     const handlesubmit = async () =>{
         try{
+            setLoading(true)
             const res = await startclaim(id,reclamo)
             if(res[0]=='Exito'){
                 Noti('Reclamo Realizado')
             }else{
                 NotiError('Ya hay un reclamo en curzo')
             }
+            setLoading(false)
         }catch(error){
             console.log(error)
         }
@@ -57,8 +61,12 @@ const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega
        }
         
     }
-
+    
+    const handleReclamo = (e) =>{
+        setReclamo(e.target.value)
+    }
     const RenderBodyreclamo = () =>{
+        
         if(reclamocli !=null){
             return(
                 <section style={{width:'100%'}}>
@@ -88,7 +96,7 @@ const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega
                 <Modal.Body className='modal-registro flex-column align-items-center' style={{ width: '100%' }}>
                     <Form.Group controlId="dob" style={{ width: '100%' }}>
                         <label htmlFor="exampleFormControlTextarea1">Descripción</label>
-                        <textarea className="form-control" id="exampleFormControlTextarea1" onChange={(e) => setReclamo(e.target.value)} rows="3"></textarea>
+                        <textarea className="form-control" id="exampleFormControlTextarea1" onChange={handleReclamo} rows="3"></textarea>
                     </Form.Group>
                     <button className="btn btn-info btn-block my-4" onClick={handlesubmit} style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px", width: '50%' }}>CONFIRMAR</button>
                 </Modal.Body>
@@ -97,6 +105,7 @@ const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega
     }
     return (
         <>
+        
             <tr>
                 <td>
                     <div className="d-flex justify-content-center">
@@ -130,6 +139,7 @@ const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
             >
+                {loading && <div className="loading">Loading&#8230;</div>}
                 <Modal.Header className='moda-registro-header'>
                     <Modal.Title id="contained-modal-title-vcenter" className='d-flex justify-content-between' style={{ width: '100%' }}>
                         <h5 className="modal-title" id="exampleModalLabel">Reclamo</h5>
@@ -138,7 +148,33 @@ const Shoppinghistory = ({id,fecha, nombreProducto,cantidad,total,metodosEntrega
                 </Modal.Header>
                 <Modal.Body className='modal-registro flex-column align-items-center' style={{width:'100%'}}>
                     
-                      <RenderBodyreclamo></RenderBodyreclamo>
+                      {reclamocli !=null ? <section style={{width:'100%'}}>
+                        
+
+                        <div className="">
+                            
+                            <div className="">
+                                <div className="p-3" style={{ backgroundColor: "#eee" }}>
+                                    <span className="fw-bold">Descripción de la compra</span>
+                                    <div className="d-flex justify-content-between mt-2">
+                                        <span>FECHA ULTIMO ESTADO: </span> <span>{reclamocli.fechaUltEstado}</span>
+                                    </div>
+                                    <div className="d-flex justify-content-between mt-2">
+                                        <span>ESTADO: </span> <span>{reclamocli.estado}</span>
+                                    </div>
+                                    <div className="d-flex flex-column">
+                                        <span>DESCRIPCIÓN: </span> <span style={{marginLeft:'2rem'}}>{reclamocli.descripcion}</span>
+                                    </div>                                   
+                                </div>
+                            </div>
+                        </div>
+                    </section> : <Modal.Body className='modal-registro flex-column align-items-center' style={{ width: '100%' }}>
+                    <Form.Group controlId="dob" style={{ width: '100%' }}>
+                        <label htmlFor="exampleFormControlTextarea1">Descripción</label>
+                        <textarea className="form-control" id="exampleFormControlTextarea1" onChange={handleReclamo} rows="3"></textarea>
+                    </Form.Group>
+                    <button className="btn btn-info btn-block my-4" onClick={handlesubmit} style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px", width: '50%' }}>CONFIRMAR</button>
+                </Modal.Body>}
                 </Modal.Body>
             </Modal>
         </>

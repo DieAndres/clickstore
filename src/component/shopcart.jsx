@@ -111,7 +111,7 @@ import Shopcarproduct from "./shopcarproduct";
                           </MDBTypography>
                         </div>
                         {productos.map((element, index) => (
-                          <Shopcarproduct imagenesUrl={element.dtProducto.imagenesUrl} id={element.idProducto} nombreProducto={element.nombreProducto} cantidad={element.cantidad} total={element.total}></Shopcarproduct>
+                          <Shopcarproduct imagenesUrl={element.dtProducto.imagenesUrl} id={element.idProducto} nombreProducto={element.nombreProducto} cantidad={element.cantidad} total={element.total} productos={productos} setproductos={setproductos}></Shopcarproduct>
                         ))}
                         <div className="pt-5">
                           <MDBTypography tag="h6" className="mb-0">

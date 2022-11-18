@@ -11,7 +11,7 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
     const [fechas, setFechas] = useState('');
     const [imagenret, setImagenret] =useState('');
     const [url, setUrl] =useState('');
-    const toastId = useRef(null)
+    const [loading, setLoading] = useState(false);
     const formatearFecha = (fecha) =>{
         debugger
         if(fecha !='' && fecha !=undefined){
@@ -28,6 +28,8 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
             if(fecdes !=''){
                 if(fechas !=''){
                     try{
+                        debugger
+                        setLoading(true)
                         const res = await setFechaentrega(fecdes,fechas,id)
                         if(res=='Exito'){
                             Noti('Fecha asignada')
@@ -37,6 +39,7 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
                         else{
                             NotiError('Error al asignar fecha')
                         }
+                         setLoading(false)
                     }catch(error){
             
                     }
@@ -132,7 +135,7 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className='modal-registro flex-column align-items-center'>
-            
+          {loading && <div className="loading">Loading&#8230;</div>}
               <Form.Group controlId="dob" style={{width:'50%'}}>
                             <Form.Label>Fecha de Desde</Form.Label>
                             <Form.Control type="datetime-local" onChange={(e)=>setFecdes(e.target.value)} name="fecdes" placeholder="Date of Birth" />

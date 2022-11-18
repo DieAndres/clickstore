@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import Header from "../header";
 import '../../assets/listuser.css'
-import { userListAll } from "../../services/service";
+import { userListAll,searchUser } from "../../services/service";
 import CreateAdmin from "./createAdmin";
 import User from "./user";
 const UserList= () =>{
@@ -43,6 +43,18 @@ const UserList= () =>{
         </>
     ); 
   });
+  const handlesearch= (event)=>{
+    setSearch(event.target.value)
+  }
+  const sendsearch = async() =>{
+    debugger
+    try{
+      const resp = await searchUser(search)
+      setAllUser(resp[1])
+    }catch(error){
+      console.log(error)
+    }
+  }
  
   return (
     <>
@@ -51,6 +63,15 @@ const UserList= () =>{
       <button className="btn btn-info btn-block my-4 d-flex flex-column justify-content-center align-items-center" onClick={()=>setModalShow(true)} style={{ backgroundColor: "#212326", color: "#FFFFFF", border: "0px", width: '20%' }}><i style={{fontSize:'20px'}} class="fa-solid fa-user-plus"></i>CREAR ADMINISTRADOR </button> 
         <div className="row">
           <div className="col-lg-12">
+          <div className="input-group">
+            <div className="form-outline">
+              <input id="search-input" type="search" onChange={handlesearch} className="form-control"></input>
+              <label className="form-label" htmlFor="form1">Search</label>
+            </div>
+            <button id="search-button" onClick={sendsearch} type="button" className="btn btn-primary">
+              <i className="fas fa-search"></i>
+            </button>
+          </div>
             <div className="main-box clearfix">
               <div className="table-responsive">
                 <table className="table user-list">

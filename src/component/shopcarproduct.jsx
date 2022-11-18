@@ -16,15 +16,18 @@ import { useState } from "react";
 import { deleteProductCart } from "../services/service";
 import { Noti,NotiError } from "./Notification";
 import { storage } from "./firebase";
-const Shopcarproduct = ({id,nombreProducto,cantidad,total,imagenesUrl}) =>{
+const Shopcarproduct = ({id,nombreProducto,cantidad,total,imagenesUrl,productos, setproductos}) =>{
     debugger
     const [imagenes, setImagenes] =useState('');
     const [url, setUrl] =useState('');
+    
     let removeFormFields = async (i) => {
         try{
           const res = await deleteProductCart(id)
           if(res[0]=='Exito'){
             Noti('Producto eliminado del carrito')
+            let productosG = productos.filter(x => x.idProducto !== id);
+            setproductos(productosG)
           }else{
             NotiError('Error al eliminar el producto del carrito')
           }

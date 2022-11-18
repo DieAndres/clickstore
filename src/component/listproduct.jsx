@@ -1,9 +1,11 @@
 import React, { useState,useEffect } from "react";
-import JsonData from "../MOCK_DATA.json";
 import ReactPaginate from "react-paginate";
 import Product from "./product";
 import { AllListProductActive } from "../services/service";
 import { searchproduct , filterCategory} from "../services/service";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Noti } from "./Notification";
 const ListProduct = () =>{
   const [allproduct, setAllProduct] = useState([
 ]);
@@ -24,7 +26,6 @@ const ListProduct = () =>{
       try {
         async function getListProduct() {
           const res = await AllListProductActive()
-          debugger
           const arrprod = res.objeto;
           setAllProduct(arrprod)
         }

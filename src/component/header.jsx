@@ -15,6 +15,7 @@ const Header = () =>{
     const logout = () =>{
         sessionStorage.setItem("user",'');
         sessionStorage.setItem("rol", '');
+        sessionStorage.setItem("token", '');
         navigate('/')
     }
     const MenuVendedor = ()=>{

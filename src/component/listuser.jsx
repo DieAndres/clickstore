@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import JsonData from "../MOCK_DATA.json";
 import ReactPaginate from "react-paginate";
 import User from "./user";
 import Header from "./header";

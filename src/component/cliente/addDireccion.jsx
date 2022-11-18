@@ -2,7 +2,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react'
 import { agregarDireccion } from '../../services/service';
 import { Noti,NotiError } from '../Notification';
-const AddDireccion = (props) =>{
+const AddDireccion = ({show,setModalShow,direcciones,setDireciones}) =>{
   const [datos, setDatos] = useState({
     calle:'',
     numero : '',
@@ -29,6 +29,8 @@ const AddDireccion = (props) =>{
       const resp = await agregarDireccion(datos);
       if(resp[0] == "Se ha registrado la/s direccion/es"){
         Noti('Direccion agregada');
+        const arr2 = direcciones.concat(datos);
+        setDireciones(arr2)
       }else{
         NotiError('Error al agregar direccion')
       }
@@ -51,15 +53,16 @@ const AddDireccion = (props) =>{
     return (
       <>
         <Modal
-          {...props}
+          show={show}
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
           centered
         >
-          <Modal.Header closeButton className='moda-registro-header'>
-            <Modal.Title id="contained-modal-title-vcenter">
-              <h5 className="modal-title" id="exampleModalLabel">Agregar Direccion</h5>
-            </Modal.Title>
+          <Modal.Header className='moda-registro-header'>
+            <Modal.Title id="contained-modal-title-vcenter" className='d-flex justify-content-between' style={{ width: '100%' }}>
+                        <h5 className="modal-title" id="exampleModalLabel">Crear Direccion</h5>
+                        <i onClick={() => setModalShow(false)} className="fa-solid fa-xmark"></i>
+              </Modal.Title>
           </Modal.Header>
           <Modal.Body className='modal-registro'>
             <div className="text-center border border-light p-5" action="#!" style={{width:"70%"}}>
