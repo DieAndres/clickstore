@@ -67,7 +67,9 @@
 
 /**/
 .header-menu{
-  background: #007f61 !important;
+  background-image: url('https://www.computyne.com/wp-content/uploads/2021/02/retail-and-ecommerce-back-office-solutions-.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /*Paginacion */
@@ -365,17 +367,13 @@ tbody > tr> td > p{
 input.star { display: none; }
 
 div.stars {
-
-  width: 270px;
-
   display: inline-block;
-
 }
 
 .ratings{
 
   background-color:#fff;
-      padding: 54px;
+      padding: 23px;
       border: 1px solid rgba(0, 0, 0, 0.1);
 box-shadow: 0px 10px 10px #E0E0E0;
 }
@@ -518,3 +516,16 @@ box-shadow: 0px 10px 10px #E0E0E0;
     transform: rotate(360deg);
   }
 }
+
+
+.dataTable thead tr th::after {
+  right: 1em;
+  content: "\f0dc";
+  font-family: 'Font Awesome\ 5 Free';
+  font-weight: 900;
+  font-size: 1rem;
+  margin-left: 1rem;
+}
+
+
+

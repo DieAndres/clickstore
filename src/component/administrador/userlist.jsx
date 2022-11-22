@@ -28,12 +28,18 @@ const UserList= () =>{
     }
 
   }, []);
-  const pageCount = Math.ceil(alluser.length / productPerPage);
+  var pageCount =0;
+  if(alluser != undefined){
+    if(alluser.length != undefined){
+       pageCount = Math.ceil(alluser.length / productPerPage);
+    }
+  }
+  
 
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
-  
+  debugger
   const displayUsers = alluser
   .slice(pagesVisited, pagesVisited + productPerPage)
   .map((p) => {
@@ -50,7 +56,12 @@ const UserList= () =>{
     debugger
     try{
       const resp = await searchUser(search)
-      setAllUser(resp[1])
+      debugger
+      if(resp[1] != null){
+        setAllUser(resp[1])
+      }else{
+        setAllUser([])
+      }  
     }catch(error){
       console.log(error)
     }
@@ -82,6 +93,7 @@ const UserList= () =>{
                       <th><span>Correo</span></th>
                       <th><span>Rol</span></th>
                       <th><span>Activo/Bloqueado</span></th>
+                      <th><span>Bloquear/Activar/Eliminar</span></th>
                     </tr>
                   </thead>
                   <tbody>

@@ -124,8 +124,12 @@ const EditPerfile = () =>{
         sessionStorage.setItem("rol", '');
         sessionStorage.setItem("token", '');
         navigate('/')
-      }else{
-        NotiError('Error al modificar el perfil')
+      }
+      else if(res == "Error, no se ha eliminado la cuenta de usuario, el vendedor tiene compras pendientes"){
+        NotiError("Error, no se ha eliminado la cuenta de usuario, el vendedor tiene compras pendientes")
+      }
+      else{
+        NotiError('Error al eliminar perfil')
       }
     }
     catch(error){

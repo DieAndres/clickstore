@@ -40,7 +40,12 @@ const Login = () =>{
           sessionStorage.setItem("user", resp[1]);
           sessionStorage.setItem("rol", resp[3]);
           sessionStorage.setItem("token", resp[2]);
-          navigate('/home')
+          if(resp[3] == 'ROL_ADMIN'){
+            navigate('/userlist')
+          }else{
+            navigate('/home')
+          }
+         
         }else{
           NotiError(resp[0])
         }

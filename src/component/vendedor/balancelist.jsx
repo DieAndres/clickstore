@@ -1,119 +1,173 @@
+
+import { MDBDataTable } from 'mdbreact';
 import React, { useState,useEffect } from "react";
-import ReactPaginate from "react-paginate";
-import Header from "../header";
-import '../../assets/listuser.css'
-const Balancelist= () =>{
-    const [allproduct, setAllProduct] = useState([
-    ]);
-  const [pageNumber, setPageNumber] = useState(0);
-  const [numerDelete, setNumerDelete] = useState(0);
-  const [search, setSearch] = useState('');
-  
-  const productPerPage = 12;
-  const pagesVisited = pageNumber * productPerPage;
+import { balancelist } from "../../services/service";
+import { Form } from 'react-bootstrap';
+import Header from '../header';
+const Balancelist = () => {
+  const [compras, setCompras] = useState([]);
+  const [tipoFiltro, setTipoFiltro] = useState(0);
+  const [fecdes, setFecDes] = useState('');
+  const [fechas, setFecHas] = useState('');
+  const [montini, setmontini] = useState('');
+  const [montfin, setmontfin] = useState('');
+  const [categoria, setCategoria] = useState('');
   useEffect(() => {
     try {
-        console.log(numerDelete)
-      async function getListProduct() {
-        const res = await AllListProductVendedor()
-        debugger
-        const arrprod = res.objeto;
-        setAllProduct(arrprod)
+      async function getBalancelist() {
+        
+        const res = await balancelist('','','','','')
+        const arrprod = res;
+        setCompras(arrprod)
       }
-      getListProduct()
+      getBalancelist()
     } catch (error) {
       console.log(error)
     }
 
   }, []);
-  const pageCount = Math.ceil(allproduct.length / productPerPage);
-
-  const changePage = ({ selected }) => {
-    setPageNumber(selected);
+  const data = {
+    columns: [
+      {
+        label: 'Id Compra',
+        field: 'id',
+        sort: 'asc',
+        width: 150
+      },
+      {
+        label: 'Nombre Producto',
+        field: 'nombreProducto',
+        sort: 'asc',
+        width: 150
+      },
+      {
+        label: 'Estado',
+        field: 'estado',
+        sort: 'asc',
+        width: 270
+      },
+      {
+        label: 'Cantidad',
+        field: 'cantidad',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Total',
+        field: 'total',
+        sort: 'asc',
+        width: 100
+      },
+      {
+        label: 'Fecha',
+        field: 'fecha',
+        sort: 'asc',
+        width: 150
+      }
+    ],
+    rows: compras
   };
-  const deleteproduct = async(id) =>{
-    try{
-        setNumerDelete(numerDelete+1);
-        const res = await deleteProductVendedor(id);
-        window.location.reload(true);
-    }catch(error){
-
+  const handleselect= (e) =>{ 
+    debugger
+    if(e.target.value == 1){
+      setTipoFiltro(1)
     }
-}
-
-  const displayUsers = allproduct
-  .slice(pagesVisited, pagesVisited + productPerPage)
-  .map((p) => {
-    return (
-        <>
-            <ProductVendedor id={p.id} nombre={p.nombre} imagen={p.imagenesUrl} activo={p.activo} descripcion={p.descripcion} precio={p.precio} stock={p.stock} categoria={p.categoria}></ProductVendedor>
-      </>
-    ); 
-  });
-  const handlesearch= (event)=>{
-    setSearch(event.target.value)
+    else if(e.target.value == 2){
+      setTipoFiltro(2)
+    }
+    else{
+      setTipoFiltro(3)
+    }
   }
-  const sendsearch = async() =>{
+  function format(inputDate) {
+    debugger
+    const [year, month, day] = inputDate.split('-');
+
+    const result = [year,month, day, ].join('/');
+    return result
+  }
+  const handlefilter = async () =>{
     debugger
     try{
-      const resp = await searchproductseller(search)
-      setAllProduct(resp[1])
+      const res = await balancelist(fecdes,fechas,montfin,montini,categoria)
+        const arrprod = res;
+        setCompras(arrprod)
     }catch(error){
-      console.log(error)
+
     }
   }
+  
   return (
     <>
-      <Header></Header>
-      <div className="container" style={{ marginTop: "4rem" }}>
-        <div className="input-group">
-          <div className="form-outline">
-            <input id="search-input" type="search" onChange={handlesearch} className="form-control"></input>
-            <label className="form-label" htmlFor="form1">Search</label>
+    <Header></Header>
+    
+    <div className='container'>
+      <select className="form-select mb-4 mt-4" aria-label="Default select example" onChange={(e) =>setTipoFiltro(e.target.value)} style={{width:'40%', marginLeft:'auto',marginRight:'auto'}}>
+        <option selected>Selecciona filtro</option>
+        <option value="1">Fecha</option>
+        <option value="2">Monto</option>
+        <option value="3">Categoria</option>
+      </select>
+      {tipoFiltro == 1 && <>
+        <div className="d-flex flex-column justify-content-center "style={{width:'100%'}}>
+        <div style={{width:'40%',marginLeft:'auto', marginRight:'auto' }}  >
+          <Form.Group controlId="dob">
+            <Form.Label>Fecha Desde</Form.Label>
+            <Form.Control type="date" onChange={(e) =>setFecDes(format(e.target.value))} name="registrofechanac" placeholder="Date of Birth" />
+          </Form.Group>
+          <Form.Group controlId="dob">
+            <Form.Label>Fecha Hasta</Form.Label>
+            <Form.Control type="date" onChange={(e) =>setFecHas(format(e.target.value))} name="registrofechanac" placeholder="Date of Birth" />
+          </Form.Group>
           </div>
-          <button id="search-button" onClick={sendsearch} type="button" className="btn btn-primary">
-            <i className="fas fa-search"></i>
+          </div>
+          <button className="btn btn-outline-dark" type="submit" onClick={handlefilter}> 
+            Filtrar
           </button>
-        </div>
-        <div className="row">
-          <div className="col-lg-12">
-            <div className="main-box clearfix">
-              <div className="table-responsive">
-                <table className="table user-list">
-                  <thead>
-                    <tr>
-
-                      <th><span>Nombre</span></th>
-                      <th><span>Descripción</span></th>
-                      <th className="text-center"><span>Precio</span></th>
-                      <th><span>Stock</span></th>
-                      <th><span>Categoria</span></th>
-                      <th>Eliminar/Modificar</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {displayUsers}
-                  </tbody>
-                </table>
-              </div>
+        </>}
+        {tipoFiltro == 2 && <>
+          <div>
+          <div class="input-group mb-3" style={{width:'40%',marginLeft:'auto', marginRight:'auto'}}>
+            <div class="input-group-prepend">
+             
+              <span class="input-group-text" id="basic-addon1">$</span>
             </div>
+            <input type="text" class="form-control" onChange={(e) =>setmontini(e.target.value)} placeholder="Monto Desde" aria-label="Username" aria-describedby="basic-addon1"></input>
           </div>
-        </div>
-      </div>
-      <div>
-        <ReactPaginate
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
-          pageCount={pageCount}
-          onPageChange={changePage}
-          containerClassName={"paginationBttns"}
-          previousLinkClassName={"previousBttn"}
-          nextLinkClassName={"nextBttn"}
-          disabledClassName={"paginationDisabled"}
-          activeClassName={"paginationActive"}
-        />
-      </div>
-
+          <div class="input-group mb-3" style={{width:'40%',marginLeft:'auto', marginRight:'auto'}}>
+         
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">$</span>
+            </div>
+            <input type="text" class="form-control" onChange={(e) =>setmontfin(e.target.value)} placeholder="Monto Hasta" aria-label="Username" aria-describedby="basic-addon1"></input>
+          </div>
+          </div>
+          <button className="btn btn-outline-dark" type="submit" onClick={handlefilter}> 
+            Filtrar
+          </button>
+        </>} 
+        {tipoFiltro == 3 && <>
+        <select className="form-select" onChange={(e)=>setCategoria(e.target.value)} name="categoriaproducto" id="categoriaproducto" aria-label="Default select example">
+          <option defaultValue>Categoria</option>
+          <option value="INDUMENTARIA">INDUMENTARIA</option>
+          <option value="ELECTRODOMESTICOS">ELECTRODOMÉSTICOS</option>
+          <option value="VIVERES">VIVERES</option>
+          <option value="INSTRUMENTOS">INSTRUMENTOS</option>
+          <option value="CALZADOS">CALZADO</option>
+          <option value="LIBROS">LIBROS</option>
+        </select> 
+        <button className="btn btn-outline-dark" type="submit" onClick={handlefilter}> 
+            Filtrar
+          </button>
+        </>  }
+      <MDBDataTable
+        striped
+        bordered
+        hover
+        noBottomColumns
+        data={data}
+      />
+    </div>
     </>
   );
 }

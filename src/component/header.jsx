@@ -2,6 +2,7 @@ import {Link,useNavigate} from 'react-router-dom';
 import logo from "../assets/CSFinal-3.png";
 import React, { useState,useEffect  } from 'react';
 import { getHeader } from '../services/service';
+import imguser from "../assets/usuario.png";
 const Header = () =>{
     const [tipoUser, setTipoUser] = useState('');
     const navigate = useNavigate();
@@ -22,7 +23,6 @@ const Header = () =>{
         return (
             <React.Fragment>
                 <MenuCliente></MenuCliente>
-                <MenuAdministrador></MenuAdministrador>
             <div className="nav-item">
                 
                         <div className="dropdown show">
@@ -36,6 +36,7 @@ const Header = () =>{
                                 <li className="nav-item"> <Link className='nav-link' to='/productpendingSeller'>Confirmar Ventas</Link></li>
                                 <li className="nav-item"> <Link className='nav-link' to='/listClaim'>Gestion de Reclamos</Link></li>
                                 <li className="nav-item"> <Link className='nav-link' to='/qualificationClient'>Calificar Cliente</Link></li>
+                                <li className="nav-item"> <Link className='nav-link' to='/balance'>Balances</Link></li>
                             </div>
                         </div>
             </div>
@@ -46,20 +47,9 @@ const Header = () =>{
         debugger
         return (
             <>
-                <div className="nav-item">
-
-                    <div className="dropdown show">
-                        <a className="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Administrador
-                        </a>
-
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li className="nav-item"> <Link className='nav-link' to='/createadmin'>Crear Administrador</Link></li>
-                            <li className="nav-item"> <Link className='nav-link' to='/listSellerRequest'>Confirmar Vendedores</Link></li>
-                            <li className="nav-item"> <Link className='nav-link' to='/userlist'>Gestion de Usuarios</Link></li>
-                        </div>
-                    </div>
-                </div>
+                <li className="nav-item"> <Link className='nav-link' to='/listSellerRequest'>Confirmar Vendedores</Link></li>
+                <li className="nav-item"> <Link className='nav-link' to='/userlist'>Gestion de Usuarios</Link></li>
+                <li className="nav-item"> <Link className='nav-link' to='/allstatistics'>Estadisticas</Link></li>
             </>
         )
     }
@@ -87,14 +77,23 @@ const Header = () =>{
                 </form>
             </>
             )
-        }else{
+        }
+        if(tipoUser == 'ROL_ADMIN'){
+                return(
+                    <div>
+                        <div className="container-fluid">
+                        <a onClick={logout} className="dropdown-item" href="#">Logout</a>
+                        </div>
+                        </div>
+                )
+        }
+        else{
             return(
                 <>
                     <form className="d-flex">
                         <Link to='/shopcart'><button className="btn btn-outline-dark" type="submit">
                             <i className="fa-solid fa-cart-shopping"></i>
                             Cart
-                            <span className="badge bg-dark text-white ms-1 rounded-pill">0</span>
                         </button></Link>
                     </form>
                     <div>
@@ -110,7 +109,7 @@ const Header = () =>{
                                         aria-expanded="false"
                                     >
                                         <img
-                                            src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp"
+                                            src={imguser}
                                             className="rounded-circle"
                                             height="22"
                                             alt="Portrait of a Woman"
@@ -120,9 +119,6 @@ const Header = () =>{
                                     <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                         <li>
                                             <Link className='nav-link' to='/editperfile'>Editar Perfil</Link>
-                                        </li>
-                                        <li>
-                                            <a className="dropdown-item" href="#">Settings</a>
                                         </li>
                                         <li>
                                             <a onClick={logout} className="dropdown-item" href="#">Logout</a>
@@ -136,11 +132,18 @@ const Header = () =>{
             )
         }
     }
+    const Renderlogo = () =>{
+        if(tipoUser != 'ROL_ADMIN'){
+            return <Link to='/home'><img src={logo} alt="login form" className="img-fluid" style={{ borderRadius: "1rem 0 0 1rem", width: "100px" }} ></img></Link>
+        }else{
+            return <img src={logo} alt="login form" className="img-fluid" style={{ borderRadius: "1rem 0 0 1rem", width: "100px" }} ></img>
+        }
+    }
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container px-4 px-lg-5">
-                    <Link to='/home'><img src={logo} alt="login form" className="img-fluid" style={{ borderRadius: "1rem 0 0 1rem", width: "100px" }} ></img></Link>
+                   <Renderlogo></Renderlogo>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -151,7 +154,7 @@ const Header = () =>{
                             
                         </ul>
                         <BtnLogeado></BtnLogeado>
-
+                        
                     </div>
 
                 </div>

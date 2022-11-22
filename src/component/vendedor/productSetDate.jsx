@@ -13,7 +13,7 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
     const [url, setUrl] =useState('');
     const [loading, setLoading] = useState(false);
     const formatearFecha = (fecha) =>{
-        debugger
+        
         if(fecha !='' && fecha !=undefined){
             const fechafor = fecha.split('T')
             return fechafor[0];
@@ -28,7 +28,7 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
             if(fecdes !=''){
                 if(fechas !=''){
                     try{
-                        debugger
+                        
                         setLoading(true)
                         const res = await setFechaentrega(fecdes,fechas,id)
                         if(res=='Exito'){
@@ -55,10 +55,10 @@ const ProductSetDate = ({nombreProducto,total, tipoEntrea, fecha,id,setAllProduc
        
     }
     const ViewImgs = () =>{
-        debugger
+        
        if(imagenesUrl.length>0){
         imagenesUrl.forEach(element => {
-            debugger
+            
                 if(element !=''){
                     setImagenret(element)
                 }

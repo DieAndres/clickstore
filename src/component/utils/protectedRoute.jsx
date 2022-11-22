@@ -26,7 +26,7 @@ export const ProtectedRouteVendeor = ({
 
 export const ProtectedRouteAdmin = ({
   isAllowed,
-  redirectTo = "/home",
+  redirectTo = "/userlist",
   children,
 }) => {
   const rol = sessionStorage.getItem('rol')

@@ -89,7 +89,7 @@ const Product = ({nombre,precio,id,imagenesUrl}) =>{
                             <button  onClick={() => setCount(count + 1)}  className="ripple ripple-surface btn btn-link px-2" role="button"><i className="fas fa-plus"></i>
                             </button>
                         </div>
-                        <div className="text-center"><button name={id} className="btn btn-outline-dark mt-auto" onClick={handleaddcart}>Add to cart</button></div>
+                        <div className="text-center"><button name={id} className="btn btn-outline-dark mt-auto" onClick={handleaddcart}>Agregar al carrito</button></div>
                         
                     </div>
                     

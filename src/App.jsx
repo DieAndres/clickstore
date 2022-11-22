@@ -14,12 +14,13 @@ import ProductPending from './component/vendedor/productpending';
 import ListSellerRequest from './component/administrador/listSellerRequest';
 import Pendingshoppinglist from './component/cliente/pendingshoppinglist';
 import ListShoppinghistory from './component/cliente/listshoppinghistory';
-import Allstatistics from './component/vendedor/allstatistics';
+import Allstatistics from './component/administrador/allstatistics';
 import ListClaim from './component/vendedor/listclaim';
 import QualificationClientList from './component/vendedor/qualificationClientlist';
 import QualificationSellerList from './component/cliente/qualificationSellerlist';
 import UserList from './component/administrador/userlist';
-import { ProtectedRouteClient ,ProtectedRouteVendeor} from './component/utils/protectedRoute';
+import Balancelist from './component/vendedor/balancelist';
+import { ProtectedRouteClient ,ProtectedRouteVendeor,ProtectedRouteAdmin} from './component/utils/protectedRoute';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 
 import { toast } from 'react-toastify';
@@ -39,8 +40,6 @@ function App() {
         <Routes>
           <Route index element={<Login />} />
           <Route path='/home' element={<Home></Home>} />
-          <Route path='/createadmin' element={<CreateAdmin></CreateAdmin>} />
-          
           <Route element={<ProtectedRouteClient />}>
             <Route path='/shopcart' element={<ShopCart></ShopCart>} />
             <Route path='/registravendedor' element={<RegistroVendedor></RegistroVendedor>} />
@@ -56,12 +55,16 @@ function App() {
             <Route path='/productpendingSeller' element={<ProductPending></ProductPending>} />
             <Route path='/listClaim' element={<ListClaim></ListClaim>} />
             <Route path='/qualificationClient' element={<QualificationClientList></QualificationClientList>} />
+            <Route path='/balance' element={<Balancelist></Balancelist>} />
+            
           </Route>
 
-          
+          <Route element={<ProtectedRouteAdmin />}>
           <Route path='/listSellerRequest' element={<ListSellerRequest></ListSellerRequest>} />
           <Route path='/allstatistics' element={<Allstatistics></Allstatistics>} />
           <Route path='/userlist' element={<UserList></UserList>} />
+          
+          </Route>
           
          
           

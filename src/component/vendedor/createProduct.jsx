@@ -70,9 +70,12 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
     }
     let handleSubmit = async (event) => {
         try{
-            debugger
-            var resp=''
-            if(cantpro != undefined){
+            console.log(formValues)
+            if(formValues[0].ruta ==''){
+                NotiError('Es obligatorio ingresar al menos una imagen')
+            }else{
+                var resp=''
+           if(cantpro != undefined){
                  resp = await  createProduct(datos,formValues,false)
                 setCantpro(cantpro+1)
             }else{
@@ -95,6 +98,9 @@ const CreateProduct = ({setCantpro,cantpro}) =>{
             }else{
                 NotiError("Error al crear un producto")
             }
+            }
+            debugger
+            
           }catch(error){
             console.log(error)
           }
