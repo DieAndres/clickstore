@@ -527,5 +527,10 @@ box-shadow: 0px 10px 10px #E0E0E0;
   margin-left: 1rem;
 }
 
-
+.bs-select{
+  display: none
+}
+.dataTables_info{
+  display: none;
+}
 

@@ -40,6 +40,8 @@ const User = ({id,correo, rol, nombre, bloqueado,alluser, setAllUser}) =>{
             const res = await deleteUser(id,rol)
             if(res[1]=='Exito'){
                 Noti('El usuario fue eliminado')
+                let alluserG = alluser.filter(x => x.idUsr !== id);
+                setAllUser(alluserG)
                 
             }else{
                 NotiError('No se pudo eliminar el usuario');

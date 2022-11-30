@@ -170,9 +170,6 @@ const Claim = ({idCompra,estado,resolucion,descripcion,fechaUltEstado,id,fecha,n
                                     <div className="d-flex justify-content-between mt-2">
                                         <span>Fecha Compra </span> <span>{formatearFecha(fecha)}</span>
                                     </div>
-                                    <div className="d-flex justify-content-between mt-2">
-                                        <span>Fecha ultimo Estado </span> <span>{formatearFecha(fechaUltEstado)}</span>
-                                    </div>
                                     
                                 </div>
                             </div>

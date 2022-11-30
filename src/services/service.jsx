@@ -896,6 +896,7 @@ export const userListAll = async () =>{
     const datos = await getHeader();
     const idClient = datos[0];
     const res =  await axios.get("https://tecnoinf-proyecto-grupo1.herokuapp.com/api/administrador/listarTodosUsuarios",{headers: {'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`}})
+    debugger
     mensaje[0] = res.data.mensaje;
     mensaje[1] = res.data.objeto
    return mensaje

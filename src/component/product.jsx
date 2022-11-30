@@ -53,7 +53,6 @@ const Product = ({nombre,precio,id,imagenesUrl}) =>{
             <div className="col mb-5">
                 <div className="card h-100">
 
-                    <div className="badge bg-dark text-white position-absolute" style={{ top: "0.5rem", right: "0.5rem" }}>Envios</div>
 
                     <ViewImgs></ViewImgs>
 
